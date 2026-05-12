@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Kanban</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+    <h1>Minhas Tarefas</h1>
+
+    <div id="board">
+
+        <div id="coluna-todo">
+            <h2>A Fazer</h2>
+            <ul id="lista-todo"></ul>
+        </div>
+
+        <div id="coluna-doing">
+            <h2>Em Andamento</h2>
+            <ul id="lista-doing"></ul>
+        </div>
+
+        <div id="coluna-done">
+            <h2>Concluído</h2>
+            <ul id="lista-done"></ul>
+        </div>
+
+    </div>
+    
+<div id="formulario">   
+    <input type="text" id="input-tarefa" placeholder="Nome da Tarefa" />
+    <button id="btn-adicionar">Adicionar</button>
+</div>
+
+   
+<script src="js/script.js"></script>
+</body>
+
+</html>
