@@ -1,6 +1,33 @@
 @KanbanApi_HostAddress = http://localhost:5088
 
-GET {{KanbanApi_HostAddress}}/weatherforecast/
+GET {{KanbanApi_HostAddress}}/api/tarefas
 Accept: application/json
 
 ###
+
+GET {{KanbanApi_HostAddress}}/api/tarefas/1
+Accept: application/json
+
+###
+
+POST {{KanbanApi_HostAddress}}/api/tarefas
+Content-Type: application/json
+
+{
+  "nome": "Criar layout do quadro",
+  "status": "todo"
+}
+
+###
+
+PUT {{KanbanApi_HostAddress}}/api/tarefas/1
+Content-Type: application/json
+
+{
+  "nome": "Criar layout do quadro",
+  "status": "doing"
+}
+
+###
+
+DELETE {{KanbanApi_HostAddress}}/api/tarefas/1

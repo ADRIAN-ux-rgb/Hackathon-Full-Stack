@@ -1,20 +1,26 @@
-using System.Security.Authentication.ExtendedProtection;
+using Microsoft.EntityFrameworkCore;
+using KanbanApi.Data;
+using KanbanApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<ITarefaService, TarefaService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(FileOptions =>
+builder.Services.AddCors(options =>
 {
-    FileOptions.AddPolicy("PermitirFrontend", policy =>
+    options.AddPolicy("PermitirFrontend", policy =>
     {
-         policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-        
+        policy.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
 
