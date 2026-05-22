@@ -1,0 +1,71 @@
+button {
+    border-radius: 10px;
+    font-weight: 700;
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+#btn-adicionar {
+    height: 54px;
+    padding: 0 24px;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-strong));
+    color: #fff;
+    box-shadow: 0 12px 26px rgba(95,124,101,0.30);
+}
+
+#btn-adicionar:hover {
+    background: linear-gradient(135deg, #6f8f75, var(--color-primary));
+}
+
+.area-botoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.area-botoes button {
+    height: 26px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.btn-status {
+    background: rgba(95,124,101,0.12);
+    color: var(--color-primary-strong);
+    border: 1px solid rgba(95,124,101,0.14);
+}
+
+.btn-status:hover {
+    background: rgba(95,124,101,0.20);
+}
+
+.btn-editar {
+    background-color: var(--color-primary);
+    color: #fff;
+}
+
+.btn-editar:hover {
+    background-color: var(--color-primary-strong);
+}
+
+.btn-excluir {
+    background: transparent;
+    color: #9b7b73;
+    border: 1px solid rgba(155,80,65,0.18);
+}
+
+.btn-excluir:hover {
+    background: rgba(239,68,68,0.10);
+    color: var(--color-danger);
+    border-color: rgba(239,68,68,0.25);
+}

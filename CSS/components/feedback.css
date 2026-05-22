@@ -1,0 +1,8 @@
+#mensagem {
+    min-height: 20px;
+    margin-bottom: 15px;
+    color: var(--color-danger);
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+}

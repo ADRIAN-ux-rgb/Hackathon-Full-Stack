@@ -135,6 +135,7 @@ body.dark .badge {
         transform 0.25s ease,
         box-shadow 0.25s ease,
         background 0.25s ease;
+
 }
 
 #coluna-todo:hover,
@@ -142,6 +143,7 @@ body.dark .badge {
 #coluna-done:hover {
     transform: translateY(-3px);
     box-shadow: 0 16px 34px rgba(77,64,45,0.14);
+    border-color: rgba(255,255,255,0.10);
 }
 
 body.dark #coluna-todo,
@@ -830,6 +832,8 @@ body.dark .menu-item.ativo {
         width: 100%;
         height: auto;
         min-height: 280px;
+
+
     }
 
     #lista-todo,
@@ -856,4 +860,121 @@ body.dark .menu-item.ativo {
         transform: scale(0.78);
         transform-origin: top right;
     }
+}
+/* SIDE BAR */
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-item span {
+    font-size: 16px;
+}
+
+.menu-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: rgba(95,124,101,0.35);
+}
+
+.menu-item.ativo .menu-dot {
+    background: #5f7c65;
+
+    box-shadow: 0 0 0 4px rgba(95,124,101,0.12);
+}
+
+body.dark .menu-dot {
+    background: rgba(168,182,166,0.35);
+}
+
+body.dark .menu-item.ativo .menu-dot {
+    background: #9fbe9e;
+
+    box-shadow: 0 0 0 4px rgba(159,190,158,0.12);
+}
+
+#sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+}
+
+.profile-mini {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px;
+
+    border-radius: 16px;
+
+    background: rgba(95,124,101,0.08);
+}
+
+.sidebar-footer {
+    position: absolute;
+
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+}
+
+.profile-mini {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px;
+
+    border-radius: 16px;
+
+    background: rgba(95,124,101,0.08);
+}
+
+body.dark .profile-mini {
+    background: rgba(255,255,255,0.05);
+}
+
+.avatar {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5f7c65,
+            #8fb89a
+        );
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-info strong {
+    font-size: 14px;
+}
+
+.profile-info small {
+    color: #7d887b;
+}
+
+body.dark .profile-info small {
+    color: #9cad99;
 }

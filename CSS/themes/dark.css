@@ -1,0 +1,149 @@
+html.dark,
+body.dark {
+    background:
+        radial-gradient(circle at top left, rgba(116,145,121,0.10), transparent 32%),
+        linear-gradient(180deg, #1e2421 0%, #111714 100%);
+    color: #f5f1ea;
+}
+
+body.dark .subtitle,
+body.dark #page-header p {
+    color: #a8b6a6;
+}
+
+body.dark #sidebar,
+body.dark #formulario {
+    background: rgba(20,28,24,0.78);
+    border-color: rgba(255,255,255,0.08);
+}
+
+body.dark .sidebar-logo,
+body.dark .modal-box {
+    color: #f5f1ea;
+}
+
+body.dark .menu-item {
+    color: #a8b6a6;
+}
+
+body.dark .menu-item:hover,
+body.dark .menu-item.ativo {
+    background: rgba(116,145,121,0.16);
+    color: #d8e5d5;
+}
+
+body.dark .menu-dot {
+    background: rgba(168,182,166,0.35);
+}
+
+body.dark .menu-item.ativo .menu-dot {
+    background: #9fbe9e;
+    box-shadow: 0 0 0 4px rgba(159,190,158,0.12);
+}
+
+body.dark .profile-mini {
+    background: rgba(255,255,255,0.05);
+}
+
+body.dark .profile-info small {
+    color: #9cad99;
+}
+
+body.dark #coluna-todo,
+body.dark #coluna-doing,
+body.dark #coluna-done {
+    background: linear-gradient(180deg, rgba(38,48,42,0.88), rgba(23,31,27,0.94));
+    border-color: rgba(255,255,255,0.06);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.34);
+}
+
+body.dark #coluna-todo h2 {
+    color: #f5f1ea;
+}
+
+body.dark #coluna-doing h2 {
+    color: #f0b84d;
+}
+
+body.dark #coluna-done h2 {
+    color: #8fd19a;
+}
+
+body.dark li {
+    background: rgba(255,255,255,0.045);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 5px 16px rgba(0,0,0,0.26);
+}
+
+body.dark li span {
+    color: #f5f1ea !important;
+}
+
+body.dark .task-info,
+body.dark .empty-state {
+    color: #91a18f;
+}
+
+body.dark #input-tarefa {
+    background: rgba(255,255,255,0.06);
+    color: #f5f1ea;
+    border-color: rgba(255,255,255,0.10);
+}
+
+body.dark #input-tarefa::placeholder {
+    color: #8f9a8e;
+}
+
+body.dark #btn-adicionar {
+    background: linear-gradient(135deg, #5f7c65, #3f5f46);
+    color: #fff;
+    box-shadow: none;
+}
+
+body.dark #btn-adicionar:hover {
+    background: linear-gradient(135deg, #6f8f75, #5f7c65);
+}
+
+body.dark .btn-status {
+    background: rgba(255,255,255,0.07);
+    color: #d8e5d5;
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
+body.dark .btn-status:hover {
+    background: rgba(255,255,255,0.12);
+}
+
+body.dark .btn-excluir {
+    background: transparent;
+    color: #a9a29b;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+body.dark .btn-excluir:hover {
+    background: rgba(239,68,68,0.12);
+    color: #ef7770;
+    border-color: rgba(239,68,68,0.22);
+}
+
+body.dark #mensagem {
+    color: #cbd5c9;
+}
+
+body.dark .modal-box {
+    background: #1e2421;
+}
+
+body.dark #btn-cancelar {
+    background: rgba(255,255,255,0.08);
+    color: #f5f1ea;
+}
+
+body.dark #lampada {
+    background: linear-gradient(180deg, #3b291a, #24170f);
+}
+
+body.dark #luz {
+    opacity: 0;
+    box-shadow: none;
+}

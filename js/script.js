@@ -199,7 +199,33 @@ async function buscarTarefas() {
     })
 
     atualizarContadores()
+
+    mostrarEstadoVazio()
+
+    function mostrarEstadoVazio() {
+    verificarListaVazia(listaTodo, "Nenhuma tarefa a fazer")
+    verificarListaVazia(listaDoing, "Nada em andamento")
+    verificarListaVazia(listaDone, "Nenhuma tarefa concluída")
 }
+
+function verificarListaVazia(lista, texto) {
+
+    const itensReais = lista.querySelectorAll("li")
+
+    if (itensReais.length === 0) {
+
+        const empty = document.createElement("li")
+
+        empty.classList.add("empty-state")
+
+        empty.textContent = texto
+
+        lista.appendChild(empty)
+    }
+}
+}
+
+
 
 async function atualizarTarefa(tarefa) {
     const resposta = await fetch(`${API_URL}/${tarefa.id}`, {
