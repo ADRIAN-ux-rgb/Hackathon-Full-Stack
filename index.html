@@ -4,39 +4,94 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Kanban</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style.css?v=20260521-1" />
 </head>
 
 <body>
 
     <h1>Minhas Tarefas</h1>
+    <p class="subtitle">
+    Organize suas demandas e acompanhe seu fluxo de trabalho.
+    </p>
+
+
+    <div id="lampada-container">
+        <div id="lampada">
+            <div id="luz"></div>
+        </div>
+
+        <div id="corda"></div>
+    </div>
 
     <div id="board">
 
-        <div id="coluna-todo">
-            <h2>A Fazer</h2>
-            <ul id="lista-todo"></ul>
-        </div>
-
-        <div id="coluna-doing">
-            <h2>Em Andamento</h2>
-            <ul id="lista-doing"></ul>
-        </div>
-
-        <div id="coluna-done">
-            <h2>Concluído</h2>
-            <ul id="lista-done"></ul>
-        </div>
-
+    <div id="coluna-todo">
+        <h2>A Fazer</h2>
+        <ul id="lista-todo"></ul>
     </div>
-    
-<div id="formulario">   
-    <input type="text" id="input-tarefa" placeholder="Nome da Tarefa" />
-    <button id="btn-adicionar">Adicionar</button>
+
+    <div id="coluna-doing">
+        <h2>Em Andamento</h2>
+        <ul id="lista-doing"></ul>
+    </div>
+
+    <div id="coluna-done">
+        <h2>Concluído</h2>
+        <ul id="lista-done"></ul>
+    </div>
+
 </div>
 
-   
-<script src="js/script.js"></script>
+
+
+    <p id="mensagem"></p>
+
+    <div id="formulario">
+        <input type="text" id="input-tarefa" placeholder="Nome da Tarefa" />
+        <button id="btn-adicionar" type="button">Adicionar</button>
+    </div>
+
+    <div id="modal-confirmacao" class="hidden">
+        <div class="modal-box">
+            <h3>Excluir tarefa</h3>
+
+            <p>Tem certeza que deseja excluir?</p>
+
+            <div class="modal-botoes">
+                <button id="btn-cancelar">Cancelar</button>
+                <button id="btn-confirmar">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+   <script defer src="js/script.js?v=20260521-1"></script>
+
 </body>
+
+<aside id="sidebar">
+    <div class="sidebar-logo">
+        <span class="logo-icon">◐</span>
+        <strong>FlowTask</strong>
+    </div>
+
+    <div class="sidebar-footer">
+    <div class="profile-mini">
+        <div class="avatar"></div>
+
+        <div>
+            <strong>Adrian</strong>
+            <span>Developer</span>
+        </div>
+    </div>
+</div>
+
+    <nav class="sidebar-menu">
+        <button class="menu-item ativo">Tarefas</button>
+        <button class="menu-item">Dashboard</button>
+        <button class="menu-item">Calendário</button>
+        <button class="menu-item">Relatórios</button>
+        <button class="menu-item">Perfil</button>
+    </nav>
+</aside>
 
 </html>
