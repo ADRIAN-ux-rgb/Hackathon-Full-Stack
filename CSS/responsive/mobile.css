@@ -1,6 +1,6 @@
 @media (max-width: 900px) {
     body {
-        padding: 24px 18px 120px;
+        padding: 24px 18px 150px;
     }
 
     #sidebar {
@@ -20,6 +20,7 @@
     #board {
         flex-direction: column;
         align-items: center;
+        padding-bottom: 150px;
     }
 
     #coluna-todo,
@@ -35,6 +36,7 @@
     #lista-done {
         height: auto;
         min-height: 220px;
+        padding-bottom: 92px;
     }
 
     #formulario {

@@ -11,8 +11,12 @@
 @import url("./components/cards.css");
 @import url("./components/buttons.css");
 @import url("./components/form.css");
+@import url("./components/filters.css");
 @import url("./components/feedback.css");
 @import url("./components/modal.css");
+@import url("./components/dashboard.css");
+@import url("./components/microinteractions.css");
+@import url("./components/toast.css");
 
 @import url("./themes/dark.css");
 @import url("./responsive/mobile.css");

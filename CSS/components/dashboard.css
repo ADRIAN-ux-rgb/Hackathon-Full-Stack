@@ -1,0 +1,410 @@
+#dashboard-view {
+    width: min(1180px, 92%);
+    margin: 0 auto;
+}
+
+#dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin: 0 0 28px;
+}
+
+#dashboard-refresh {
+    height: 44px;
+    min-width: 104px;
+    padding: 0 18px;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-strong));
+    color: #fff;
+    font-size: 14px;
+    font-weight: 750;
+    box-shadow: 0 12px 24px rgba(95,124,101,0.22);
+    transition: box-shadow 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
+}
+
+#dashboard-refresh:hover {
+    box-shadow: 0 16px 30px rgba(95,124,101,0.26);
+    filter: brightness(1.02);
+}
+
+#dashboard-refresh:disabled {
+    cursor: wait;
+    opacity: 0.72;
+    filter: none;
+    box-shadow: 0 12px 24px rgba(95,124,101,0.18);
+}
+
+#dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dashboard-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.dashboard-card,
+.dashboard-chart,
+.dashboard-progress {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(18px);
+}
+
+.dashboard-card {
+    min-height: 158px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 34px rgba(77,64,45,0.14);
+}
+
+.dashboard-card::before,
+.dashboard-chart::before,
+.dashboard-progress::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 4px;
+    background: var(--color-primary);
+}
+
+.dashboard-card:nth-child(2)::before {
+    background: #a9b5a2;
+}
+
+.dashboard-card:nth-child(3)::before {
+    background: var(--color-warning);
+}
+
+.dashboard-card:nth-child(4)::before {
+    background: var(--color-success);
+}
+
+.dashboard-card span,
+.dashboard-chart span,
+.dashboard-progress span {
+    color: var(--color-text-muted);
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.dashboard-card strong {
+    color: var(--color-text);
+    font-size: 44px;
+    line-height: 1;
+}
+
+.dashboard-card small,
+.dashboard-chart small,
+.dashboard-progress small {
+    color: var(--color-text-muted);
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.dashboard-card-total {
+    background:
+        linear-gradient(135deg, rgba(95,124,101,0.16), rgba(255,253,249,0.72)),
+        var(--color-surface);
+}
+
+.dashboard-chart {
+    min-height: 292px;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.35fr);
+    align-items: center;
+    gap: 28px;
+}
+
+.dashboard-chart::before {
+    background: linear-gradient(90deg, #a9b5a2, var(--color-warning), var(--color-success));
+}
+
+.dashboard-chart-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dashboard-chart-copy strong {
+    color: var(--color-text);
+    font-size: 30px;
+    line-height: 1.08;
+}
+
+.dashboard-chart-body {
+    display: grid;
+    grid-template-columns: 210px minmax(0, 1fr);
+    align-items: center;
+    gap: 24px;
+}
+
+.dashboard-pie-wrap {
+    position: relative;
+    width: 210px;
+    height: 210px;
+}
+
+.dashboard-pie {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 18px 26px rgba(77,64,45,0.14));
+    shape-rendering: geometricPrecision;
+    transform: rotate(-90deg);
+}
+
+.dashboard-pie-base,
+.dashboard-pie-segment {
+    fill: none;
+    stroke-width: 26;
+}
+
+.dashboard-pie-base {
+    stroke: rgba(95,124,101,0.12);
+}
+
+.dashboard-pie-segment {
+    stroke-linecap: butt;
+    stroke-dasharray: 0 276.46015351590177;
+    transition: stroke-dasharray 0.35s ease, stroke-dashoffset 0.35s ease;
+}
+
+.dashboard-pie-segment-todo {
+    stroke: #a9b5a2;
+}
+
+.dashboard-pie-segment-doing {
+    stroke: var(--color-warning);
+}
+
+.dashboard-pie-segment-done {
+    stroke: var(--color-success);
+}
+
+.dashboard-pie-center {
+    position: absolute;
+    inset: 50%;
+    width: 96px;
+    height: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 50%;
+    background: rgba(255,253,249,0.9);
+    border: 1px solid rgba(90,75,55,0.1);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.64);
+    transform: translate(-50%, -50%);
+}
+
+.dashboard-pie-center strong {
+    color: var(--color-text);
+    font-size: 32px;
+    line-height: 1;
+}
+
+.dashboard-pie-center span {
+    margin-top: 4px;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.dashboard-chart-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.dashboard-chart-legend li {
+    min-height: 48px;
+    display: grid;
+    grid-template-columns: 14px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    background: rgba(255,253,249,0.52);
+    border: 1px solid rgba(90,75,55,0.09);
+}
+
+.legend-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-swatch-todo {
+    background: #a9b5a2;
+}
+
+.legend-swatch-doing {
+    background: var(--color-warning);
+}
+
+.legend-swatch-done {
+    background: var(--color-success);
+}
+
+.dashboard-chart-legend strong {
+    color: var(--color-text);
+    font-size: 18px;
+}
+
+.dashboard-progress {
+    min-height: 190px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 22px;
+}
+
+.dashboard-progress-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dashboard-progress-copy strong {
+    color: var(--color-primary-strong);
+    font-size: 52px;
+    line-height: 1;
+}
+
+.dashboard-progress-track {
+    width: 100%;
+    height: 14px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(95,124,101,0.14);
+}
+
+#dashboard-progress-bar {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--color-primary), #8fb89a);
+    transition: width 0.35s ease;
+}
+
+#dashboard-message {
+    min-height: 22px;
+    margin-top: 18px;
+    color: var(--color-danger);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+body.dark .dashboard-card,
+body.dark .dashboard-chart,
+body.dark .dashboard-progress {
+    background: linear-gradient(180deg, rgba(38,48,42,0.88), rgba(23,31,27,0.94));
+    border-color: rgba(255,255,255,0.06);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.34);
+}
+
+body.dark .dashboard-card-total {
+    background:
+        linear-gradient(135deg, rgba(116,145,121,0.18), rgba(23,31,27,0.94)),
+        rgba(23,31,27,0.94);
+}
+
+body.dark .dashboard-card strong {
+    color: #f5f1ea;
+}
+
+body.dark .dashboard-card span,
+body.dark .dashboard-card small,
+body.dark .dashboard-chart span,
+body.dark .dashboard-chart small,
+body.dark .dashboard-progress span,
+body.dark .dashboard-progress small {
+    color: #a8b6a6;
+}
+
+body.dark .dashboard-chart-copy strong,
+body.dark .dashboard-pie-center strong,
+body.dark .dashboard-chart-legend strong {
+    color: #f5f1ea;
+}
+
+body.dark .dashboard-pie-base {
+    stroke: rgba(255,255,255,0.08);
+}
+
+body.dark .dashboard-pie-center {
+    background: rgba(23,31,27,0.9);
+    border-color: rgba(255,255,255,0.06);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+}
+
+body.dark .dashboard-chart-legend li {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.06);
+}
+
+body.dark .dashboard-progress-copy strong {
+    color: #d8e5d5;
+}
+
+body.dark .dashboard-progress-track {
+    background: rgba(255,255,255,0.08);
+}
+
+body.dark #dashboard-refresh {
+    background: linear-gradient(135deg, #5f7c65, #3f5f46);
+    box-shadow: none;
+}
+
+@media (max-width: 900px) {
+    #dashboard-view {
+        width: 100%;
+    }
+
+    #dashboard-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    #dashboard-refresh {
+        width: 100%;
+    }
+
+    .dashboard-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-chart {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-chart-body {
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+
+    .dashboard-chart-legend {
+        width: 100%;
+    }
+
+    .dashboard-card {
+        min-height: 132px;
+    }
+}

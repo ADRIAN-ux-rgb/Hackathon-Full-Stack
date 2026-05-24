@@ -19,3 +19,11 @@ body {
     align-items: center;
     gap: 34px;
 }
+
+#app-content {
+    width: 100%;
+}
+
+.app-view {
+    width: 100%;
+}

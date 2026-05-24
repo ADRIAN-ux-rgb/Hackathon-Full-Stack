@@ -6,6 +6,7 @@ async function request(endpoint = "", options = {}) {
             "Content-Type": "application/json",
             ...options.headers
         },
+        cache: "no-store",
         ...options
     })
 

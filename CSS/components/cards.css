@@ -10,12 +10,19 @@ li {
     background: rgba(255,255,255,0.72);
     border: 1px solid rgba(90,75,55,0.08);
     box-shadow: 0 8px 22px rgba(77,64,45,0.10);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    will-change: transform, opacity;
+    transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease,
+        border-color 160ms ease,
+        opacity 160ms ease;
 }
 
 li:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     box-shadow: 0 16px 34px rgba(77,64,45,0.14);
+    border-color: rgba(95,124,101,0.16);
 }
 
 li span {

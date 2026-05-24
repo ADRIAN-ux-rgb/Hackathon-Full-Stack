@@ -50,14 +50,23 @@ function criarBotaoExcluir(tarefa, onDeleteRequest) {
 
 export function criarTaskCard(tarefa, handlers) {
     const item = document.createElement("li")
+    item.classList.add("task-card-enter")
     item.dataset.id = tarefa.id
     item.draggable = true
 
+    item.addEventListener("animationend", function () {
+        item.classList.remove("task-card-enter")
+    }, { once: true })
+
     item.addEventListener("dragstart", function () {
+        item.classList.add("task-dragging")
         handlers.onDragStart(tarefa)
     })
 
-    item.addEventListener("dragend", handlers.onDragEnd)
+    item.addEventListener("dragend", function () {
+        item.classList.remove("task-dragging")
+        handlers.onDragEnd()
+    })
 
     const texto = document.createElement("span")
     texto.textContent = tarefa.nome

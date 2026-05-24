@@ -1,11 +1,14 @@
 import { listarTarefas } from "../../api/tarefasApi.js"
 import { renderizarBoard } from "../../ui/boardView.js"
 import { mostrarErro, limparMensagem } from "../../ui/feedback.js"
+import { toastError } from "../../ui/toast.js"
 import { criarDragAndDrop } from "./dragAndDrop.js"
 import { criarTaskActions } from "./taskActions.js"
+import { criarTaskFilters } from "./taskFilters.js"
 
 export function criarBoardController(elements, modal) {
     let tarefas = []
+    let filtros
 
     const dragAndDrop = criarDragAndDrop(elements.listas, function (tarefa) {
         actions.atualizar(tarefa)
@@ -26,8 +29,16 @@ export function criarBoardController(elements, modal) {
     }
 
     function renderizar() {
-        renderizarBoard(tarefas, elements, handlers)
+        const tarefasVisiveis = filtros === undefined
+            ? tarefas
+            : filtros.filtrar(tarefas)
+
+        renderizarBoard(tarefasVisiveis, elements, handlers, {
+            filtroAtivo: filtros !== undefined && filtros.temFiltroAtivo()
+        })
     }
+
+    filtros = criarTaskFilters(elements, renderizar)
 
     const actions = criarTaskActions({
         getTarefas() {
@@ -47,6 +58,7 @@ export function criarBoardController(elements, modal) {
             renderizar()
         } catch {
             mostrarErro(elements.mensagem, "Nao foi possivel carregar as tarefas")
+            toastError("Erro ao carregar tarefas.")
             renderizar()
         }
     }

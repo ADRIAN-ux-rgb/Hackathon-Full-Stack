@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <title>Kanban</title>
 
-    <link rel="stylesheet" href="css/main.css?v=20260523-1" />
+    <link rel="stylesheet" href="css/main.css?v=20260524-12" />
 </head>
 
 <body>
@@ -19,27 +19,27 @@
 
         <nav class="sidebar-menu">
 
-            <button class="menu-item ativo">
+            <button class="menu-item ativo" type="button" data-view="tarefas">
                 <span class="menu-dot"></span>
                 Tarefas
             </button>
 
-            <button class="menu-item">
+            <button class="menu-item" type="button" data-view="dashboard">
                 <span class="menu-dot"></span>
                 Dashboard
             </button>
 
-            <button class="menu-item">
+            <button class="menu-item" type="button">
                 <span class="menu-dot"></span>
                 Calendário
             </button>
 
-            <button class="menu-item">
+            <button class="menu-item" type="button">
                 <span class="menu-dot"></span>
                 Relatórios
             </button>
 
-            <button class="menu-item">
+            <button class="menu-item" type="button">
                 <span class="menu-dot"></span>
                 Perfil
             </button>
@@ -63,59 +63,218 @@
 
     </aside>
 
-    <h1>Minhas Tarefas</h1>
+    <main id="app-content">
 
-    <p class="subtitle">
-        Organize suas demandas e acompanhe seu fluxo de trabalho.
-    </p>
+        <section id="tarefas-view" class="app-view" data-view-panel="tarefas">
 
-    <div id="lampada-container">
+            <header id="page-header">
+                <h1>Minhas Tarefas</h1>
 
-        <div id="lampada">
-            <div id="luz"></div>
-        </div>
+                <p class="subtitle">
+                    Organize suas demandas e acompanhe seu fluxo de trabalho.
+                </p>
+            </header>
 
-        <div id="corda"></div>
+            <div id="lampada-container">
 
-    </div>
+                <div id="lampada">
+                    <div id="luz"></div>
+                </div>
 
-    <div id="board">
+                <div id="corda"></div>
 
-        <div id="coluna-todo">
-            <h2>A Fazer</h2>
+            </div>
 
-            <ul id="lista-todo"></ul>
-        </div>
+            <div id="workspace">
 
-        <div id="coluna-doing">
-            <h2>Em Andamento</h2>
+                <section class="task-filters" aria-label="Filtros de tarefas">
+                    <div class="task-search">
+                        <label for="task-search-input">Buscar tarefa</label>
+                        <input
+                            type="search"
+                            id="task-search-input"
+                            placeholder="Buscar por nome"
+                            autocomplete="off"
+                        />
+                    </div>
 
-            <ul id="lista-doing"></ul>
-        </div>
+                    <div class="task-status-filter" role="group" aria-label="Filtrar por status">
+                        <button class="task-filter-option ativo" type="button" data-filter-status="all">
+                            Todos
+                        </button>
 
-        <div id="coluna-done">
-            <h2>Concluído</h2>
+                        <button class="task-filter-option" type="button" data-filter-status="todo">
+                            A Fazer
+                        </button>
 
-            <ul id="lista-done"></ul>
-        </div>
+                        <button class="task-filter-option" type="button" data-filter-status="doing">
+                            Em Andamento
+                        </button>
 
-    </div>
+                        <button class="task-filter-option" type="button" data-filter-status="done">
+                            Concluído
+                        </button>
+                    </div>
 
-    <p id="mensagem"></p>
+                    <button id="task-clear-filters" class="task-clear-filters" type="button">
+                        Limpar
+                    </button>
+                </section>
 
-    <div id="formulario">
+                <div id="board">
 
-        <input
-            type="text"
-            id="input-tarefa"
-            placeholder="Nome da tarefa"
-        />
+                    <div id="coluna-todo">
+                        <h2>A Fazer</h2>
 
-        <button id="btn-adicionar" type="button">
-            Adicionar
-        </button>
+                        <ul id="lista-todo"></ul>
+                    </div>
 
-    </div>
+                    <div id="coluna-doing">
+                        <h2>Em Andamento</h2>
+
+                        <ul id="lista-doing"></ul>
+                    </div>
+
+                    <div id="coluna-done">
+                        <h2>Concluído</h2>
+
+                        <ul id="lista-done"></ul>
+                    </div>
+
+                </div>
+
+                <p id="mensagem"></p>
+
+            </div>
+
+            <div id="formulario">
+
+                <input
+                    type="text"
+                    id="input-tarefa"
+                    placeholder="Nome da tarefa"
+                />
+
+                <button id="btn-adicionar" type="button">
+                    Adicionar
+                </button>
+
+            </div>
+
+        </section>
+
+        <section id="dashboard-view" class="app-view hidden" data-view-panel="dashboard">
+
+            <header id="dashboard-header">
+                <div>
+                    <h1>Dashboard</h1>
+                    <p class="subtitle">
+                        Acompanhe o progresso geral das suas tarefas.
+                    </p>
+                </div>
+
+                <button id="dashboard-refresh" type="button">
+                    Atualizar
+                </button>
+            </header>
+
+            <div id="dashboard-content">
+
+                <section class="dashboard-summary" aria-label="Resumo das tarefas">
+
+                    <article class="dashboard-card dashboard-card-total">
+                        <span>Total de tarefas</span>
+                        <strong id="dashboard-total">0</strong>
+                        <small>Itens no quadro</small>
+                    </article>
+
+                    <article class="dashboard-card">
+                        <span>A fazer</span>
+                        <strong id="dashboard-todo">0</strong>
+                        <small>Demandas aguardando início</small>
+                    </article>
+
+                    <article class="dashboard-card">
+                        <span>Em andamento</span>
+                        <strong id="dashboard-doing">0</strong>
+                        <small>Trabalho em progresso</small>
+                    </article>
+
+                    <article class="dashboard-card">
+                        <span>Concluídas</span>
+                        <strong id="dashboard-done">0</strong>
+                        <small>Entregas finalizadas</small>
+                    </article>
+
+                </section>
+
+                <section class="dashboard-chart" aria-labelledby="dashboard-chart-title">
+                    <div class="dashboard-chart-copy">
+                        <span>Distribuição</span>
+                        <strong id="dashboard-chart-title">Tarefas por status</strong>
+                        <small id="dashboard-chart-label">Nenhuma tarefa cadastrada ainda</small>
+                    </div>
+
+                    <div class="dashboard-chart-body">
+                        <div class="dashboard-pie-wrap">
+                            <svg
+                                id="dashboard-pie-chart"
+                                class="dashboard-pie"
+                                viewBox="0 0 120 120"
+                                role="img"
+                                aria-label="Distribuição das tarefas por status"
+                            >
+                                <circle class="dashboard-pie-base" cx="60" cy="60" r="44"></circle>
+                                <circle id="dashboard-pie-todo" class="dashboard-pie-segment dashboard-pie-segment-todo" cx="60" cy="60" r="44"></circle>
+                                <circle id="dashboard-pie-doing" class="dashboard-pie-segment dashboard-pie-segment-doing" cx="60" cy="60" r="44"></circle>
+                                <circle id="dashboard-pie-done" class="dashboard-pie-segment dashboard-pie-segment-done" cx="60" cy="60" r="44"></circle>
+                            </svg>
+
+                            <div class="dashboard-pie-center" aria-hidden="true">
+                                <strong id="dashboard-pie-total">0</strong>
+                                <span>total</span>
+                            </div>
+                        </div>
+
+                        <ul class="dashboard-chart-legend" aria-label="Legenda do gráfico">
+                            <li>
+                                <span class="legend-swatch legend-swatch-todo"></span>
+                                <span>A fazer</span>
+                                <strong id="dashboard-legend-todo">0</strong>
+                            </li>
+                            <li>
+                                <span class="legend-swatch legend-swatch-doing"></span>
+                                <span>Em andamento</span>
+                                <strong id="dashboard-legend-doing">0</strong>
+                            </li>
+                            <li>
+                                <span class="legend-swatch legend-swatch-done"></span>
+                                <span>Concluído</span>
+                                <strong id="dashboard-legend-done">0</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section class="dashboard-progress" aria-label="Porcentagem concluída">
+                    <div class="dashboard-progress-copy">
+                        <span>Conclusão</span>
+                        <strong id="dashboard-percent">0%</strong>
+                        <small id="dashboard-progress-label">Nenhuma tarefa concluída ainda</small>
+                    </div>
+
+                    <div class="dashboard-progress-track" aria-hidden="true">
+                        <div id="dashboard-progress-bar"></div>
+                    </div>
+                </section>
+
+            </div>
+
+            <p id="dashboard-message"></p>
+
+        </section>
+
+    </main>
 
     <div id="modal-confirmacao" class="hidden">
 
@@ -143,7 +302,7 @@
 
     </div>
 
-    <script type="module" src="js/main.js?v=20260523-1"></script>
+    <script type="module" src="js/main.js?v=20260524-12"></script>
 
 </body>
 

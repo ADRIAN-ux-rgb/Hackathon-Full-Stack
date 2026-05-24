@@ -76,7 +76,7 @@
 #lista-done {
     height: 285px;
     overflow-y: auto;
-    padding: 4px 4px 10px 2px;
+    padding: 4px 4px 84px 2px;
 }
 
 #lista-todo::-webkit-scrollbar,

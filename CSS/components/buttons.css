@@ -2,10 +2,12 @@ button {
     border-radius: 10px;
     font-weight: 700;
     transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease;
+        transform 160ms ease,
+        background 160ms ease,
+        color 160ms ease,
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        opacity 160ms ease;
 }
 
 button:hover {
@@ -23,6 +25,7 @@ button:hover {
 
 #btn-adicionar:hover {
     background: linear-gradient(135deg, #6f8f75, var(--color-primary));
+    box-shadow: 0 16px 30px rgba(95,124,101,0.28);
 }
 
 .area-botoes {
@@ -47,6 +50,7 @@ button:hover {
 
 .btn-status:hover {
     background: rgba(95,124,101,0.20);
+    box-shadow: 0 6px 12px rgba(95,124,101,0.10);
 }
 
 .btn-editar {
@@ -56,6 +60,7 @@ button:hover {
 
 .btn-editar:hover {
     background-color: var(--color-primary-strong);
+    box-shadow: 0 6px 12px rgba(95,124,101,0.16);
 }
 
 .btn-excluir {

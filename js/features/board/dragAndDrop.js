@@ -4,9 +4,18 @@ export function criarDragAndDrop(listas, onDropStatus) {
     Object.entries(listas).forEach(function ([status, lista]) {
         lista.addEventListener("dragover", function (evento) {
             evento.preventDefault()
+            lista.parentElement.classList.add("kanban-drop-active")
+        })
+
+        lista.addEventListener("dragleave", function (evento) {
+            if (!lista.contains(evento.relatedTarget)) {
+                lista.parentElement.classList.remove("kanban-drop-active")
+            }
         })
 
         lista.addEventListener("drop", function () {
+            lista.parentElement.classList.remove("kanban-drop-active")
+
             if (tarefaArrastada === null) {
                 return
             }
@@ -23,6 +32,10 @@ export function criarDragAndDrop(listas, onDropStatus) {
             tarefaArrastada = tarefa
         },
         finalizar() {
+            Object.values(listas).forEach(function (lista) {
+                lista.parentElement.classList.remove("kanban-drop-active")
+            })
+
             tarefaArrastada = null
         }
     }

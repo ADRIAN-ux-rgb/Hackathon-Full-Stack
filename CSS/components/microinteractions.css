@@ -1,0 +1,107 @@
+@keyframes taskFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes counterPulse {
+    0% {
+        transform: scale(1);
+    }
+
+    45% {
+        transform: scale(1.16);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+li.task-card-enter {
+    animation: taskFadeIn 180ms ease-out both;
+}
+
+li.task-dragging {
+    cursor: grabbing;
+    opacity: 0.62;
+    transform: scale(0.985);
+    box-shadow: 0 18px 38px rgba(0,0,0,0.18);
+}
+
+.kanban-drop-active {
+    border-color: rgba(159,190,158,0.28);
+    background:
+        linear-gradient(180deg, rgba(116,145,121,0.12), rgba(23,31,27,0.04)),
+        var(--color-surface);
+}
+
+.contador {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    background: rgba(95,124,101,0.10);
+    transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.contador.counter-updated {
+    animation: counterPulse 180ms ease-out;
+}
+
+.task-filters,
+.task-filter-option,
+.task-clear-filters,
+#task-search-input {
+    transition:
+        background 160ms ease,
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        color 160ms ease,
+        opacity 160ms ease;
+}
+
+.task-filter-option:active,
+.task-clear-filters:active,
+.area-botoes button:active,
+#btn-adicionar:active,
+#dashboard-refresh:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.area-botoes button,
+#btn-adicionar,
+#dashboard-refresh,
+.menu-item {
+    will-change: transform;
+}
+
+body.dark .kanban-drop-active {
+    border-color: rgba(159,190,158,0.22);
+    background:
+        linear-gradient(180deg, rgba(116,145,121,0.14), rgba(23,31,27,0.96)),
+        rgba(23,31,27,0.94);
+}
+
+body.dark .contador {
+    background: rgba(159,190,158,0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 1ms !important;
+    }
+}
