@@ -4,6 +4,7 @@ export function criarDragAndDrop(listas, onDropStatus) {
     Object.entries(listas).forEach(function ([status, lista]) {
         lista.addEventListener("dragover", function (evento) {
             evento.preventDefault()
+            evento.dataTransfer.dropEffect = "move"
             lista.parentElement.classList.add("kanban-drop-active")
         })
 
@@ -17,6 +18,10 @@ export function criarDragAndDrop(listas, onDropStatus) {
             lista.parentElement.classList.remove("kanban-drop-active")
 
             if (tarefaArrastada === null) {
+                return
+            }
+
+            if (tarefaArrastada.status === status) {
                 return
             }
 

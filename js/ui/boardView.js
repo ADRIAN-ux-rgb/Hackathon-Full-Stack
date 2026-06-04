@@ -7,6 +7,28 @@ export function limparBoard(listas) {
     })
 }
 
+export function mostrarSkeletonBoard(listas) {
+    Object.values(listas).forEach(function (lista) {
+        lista.innerHTML = ""
+
+        for (let index = 0; index < 2; index += 1) {
+            const skeleton = document.createElement("li")
+            skeleton.classList.add("task-skeleton")
+            skeleton.setAttribute("aria-hidden", "true")
+
+            const title = document.createElement("span")
+            title.classList.add("task-skeleton-line", "task-skeleton-title")
+
+            const meta = document.createElement("span")
+            meta.classList.add("task-skeleton-line", "task-skeleton-meta")
+
+            skeleton.appendChild(title)
+            skeleton.appendChild(meta)
+            lista.appendChild(skeleton)
+        }
+    })
+}
+
 export function atualizarContadores(tarefas, titulos) {
     const totais = Object.values(TASK_STATUS).reduce(function (acc, status) {
         acc[status] = tarefas.filter(function (tarefa) {
@@ -22,10 +44,12 @@ export function atualizarContadores(tarefas, titulos) {
 }
 
 export function renderizarBoard(tarefas, elements, handlers, options = {}) {
+    const posicoesAnteriores = capturarPosicoesCards(elements.listas)
+
     limparBoard(elements.listas)
 
     tarefas.forEach(function (tarefa) {
-        inserirTarefaNaLista(tarefa, elements.listas, handlers)
+        inserirTarefaNaLista(tarefa, elements.listas, handlers, options)
     })
 
     atualizarContadores(tarefas, elements.titulos)
@@ -36,9 +60,10 @@ export function renderizarBoard(tarefas, elements, handlers, options = {}) {
     }
 
     mostrarEstadosVazios(elements.listas)
+    animarMudancasLayout(elements.listas, posicoesAnteriores)
 }
 
-export function inserirTarefaNaLista(tarefa, listas, handlers) {
+export function inserirTarefaNaLista(tarefa, listas, handlers, options = {}) {
     const status = normalizarStatus(tarefa.status)
 
     const lista = listas[status]
@@ -53,7 +78,10 @@ export function inserirTarefaNaLista(tarefa, listas, handlers) {
     lista.appendChild(
         criarTaskCard(
             { ...tarefa, status },
-            handlers
+            handlers,
+            {
+                animarEntrada: options.animarEntrada === true
+            }
         )
     )
 }
@@ -102,4 +130,51 @@ function atualizarTituloContador(titulo, label, total, classes) {
     if (totalAnterior !== null && totalAnterior !== String(total)) {
         novoContador.classList.add("counter-updated")
     }
+}
+
+function capturarPosicoesCards(listas) {
+    const posicoes = new Map()
+
+    Object.values(listas).forEach(function (lista) {
+        lista.querySelectorAll("li[data-id]").forEach(function (card) {
+            posicoes.set(card.dataset.id, card.getBoundingClientRect())
+        })
+    })
+
+    return posicoes
+}
+
+function animarMudancasLayout(listas, posicoesAnteriores) {
+    Object.values(listas).forEach(function (lista) {
+        lista.querySelectorAll("li[data-id]").forEach(function (card) {
+            const posicaoAnterior = posicoesAnteriores.get(card.dataset.id)
+
+            if (posicaoAnterior === undefined) {
+                return
+            }
+
+            const posicaoAtual = card.getBoundingClientRect()
+            const deslocamentoX = posicaoAnterior.left - posicaoAtual.left
+            const deslocamentoY = posicaoAnterior.top - posicaoAtual.top
+
+            if (deslocamentoX === 0 && deslocamentoY === 0) {
+                return
+            }
+
+            card.classList.add("task-card-moving")
+            card.style.transition = "none"
+            card.style.transform = `translate(${deslocamentoX}px, ${deslocamentoY}px)`
+
+            requestAnimationFrame(function () {
+                card.style.transition = ""
+                card.style.transform = ""
+            })
+
+            card.addEventListener("transitionend", function () {
+                card.classList.remove("task-card-moving")
+                card.style.transition = ""
+                card.style.transform = ""
+            }, { once: true })
+        })
+    })
 }

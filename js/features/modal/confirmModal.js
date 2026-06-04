@@ -11,9 +11,14 @@ export function criarConfirmModal(elements, onConfirm) {
         tarefaSelecionada = null
     }
 
-    elements.btnCancelar.addEventListener("click", fechar)
+    elements.btnCancelar.addEventListener("click", function (event) {
+        event.preventDefault()
+        fechar()
+    })
 
-    elements.btnConfirmar.addEventListener("click", async function () {
+    elements.btnConfirmar.addEventListener("click", async function (event) {
+        event.preventDefault()
+
         if (tarefaSelecionada === null) {
             return
         }

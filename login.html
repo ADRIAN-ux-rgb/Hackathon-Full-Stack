@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Login - Kanban</title>
+
+    <script>
+        (function () {
+            try {
+                if (localStorage.getItem("tema") === "dark") {
+                    document.documentElement.classList.add("dark")
+                }
+            } catch {
+                document.documentElement.classList.remove("dark")
+            }
+        })()
+    </script>
+
+    <link rel="stylesheet" href="css/main.css?v=20260524-12" />
+</head>
+
+<body class="auth-mode">
+
+    <script>
+        document.body.classList.toggle("dark", document.documentElement.classList.contains("dark"))
+    </script>
+
+    <main id="app-content">
+
+        <section id="login-view" class="auth-view hidden" data-auth-view="login">
+
+            <div class="auth-shell">
+                <section class="auth-panel" aria-labelledby="login-title">
+                    <div class="auth-copy">
+                        <span class="auth-kicker">FlowTask Access</span>
+                        <h1 id="login-title">Login</h1>
+                        <p>
+                            Entre para continuar organizando tarefas, prioridades e entregas em um unico fluxo.
+                        </p>
+                    </div>
+
+                    <form class="auth-form" data-auth-form="login" novalidate>
+                        <label class="auth-field" for="login-email">
+                            <span>Email</span>
+                            <input id="login-email" data-auth-input="email" type="email" autocomplete="email" placeholder="seu@email.com" />
+                            <small class="auth-error" data-auth-error="email"></small>
+                        </label>
+
+                        <label class="auth-field" for="login-password">
+                            <span>Senha</span>
+                            <input id="login-password" data-auth-input="senha" type="password" autocomplete="current-password" placeholder="Digite sua senha" />
+                            <small class="auth-error" data-auth-error="senha"></small>
+                        </label>
+
+                        <button class="auth-submit" type="submit">
+                            Entrar
+                        </button>
+
+                        <p class="auth-feedback" data-auth-feedback="login" aria-live="polite"></p>
+                    </form>
+
+                    <div class="auth-switch">
+                        <span>Novo por aqui?</span>
+                        <button type="button" data-auth-target="cadastro">
+                            Criar conta
+                        </button>
+                    </div>
+                </section>
+
+                <aside class="auth-visual" aria-hidden="true">
+                    <div class="auth-orbit auth-orbit-primary"></div>
+                    <div class="auth-orbit auth-orbit-secondary"></div>
+                    <div class="auth-metric">
+                        <span>Foco</span>
+                        <strong>84%</strong>
+                    </div>
+                    <div class="auth-metric auth-metric-alt">
+                        <span>Fluxo ativo</span>
+                        <strong>12</strong>
+                    </div>
+                </aside>
+            </div>
+
+        </section>
+
+        <section id="cadastro-view" class="auth-view hidden" data-auth-view="cadastro">
+
+            <div class="auth-shell auth-shell-register">
+                <section class="auth-panel" aria-labelledby="cadastro-title">
+                    <div class="auth-copy">
+                        <span class="auth-kicker">FlowTask Setup</span>
+                        <h1 id="cadastro-title">Cadastro</h1>
+                        <p>
+                            Crie a base da sua conta para preparar o acesso quando a autenticacao real for ativada.
+                        </p>
+                    </div>
+
+                    <form class="auth-form" data-auth-form="cadastro" novalidate>
+                        <label class="auth-field" for="register-name">
+                            <span>Nome</span>
+                            <input id="register-name" data-auth-input="nome" type="text" autocomplete="name" placeholder="Seu nome" />
+                            <small class="auth-error" data-auth-error="nome"></small>
+                        </label>
+
+                        <label class="auth-field" for="register-email">
+                            <span>Email</span>
+                            <input id="register-email" data-auth-input="email" type="email" autocomplete="email" placeholder="seu@email.com" />
+                            <small class="auth-error" data-auth-error="email"></small>
+                        </label>
+
+                        <label class="auth-field" for="register-password">
+                            <span>Senha</span>
+                            <input id="register-password" data-auth-input="senha" type="password" autocomplete="new-password" placeholder="Crie uma senha" />
+                            <small class="auth-error" data-auth-error="senha"></small>
+                        </label>
+
+                        <label class="auth-field" for="register-confirm-password">
+                            <span>Confirmar senha</span>
+                            <input id="register-confirm-password" data-auth-input="confirmarSenha" type="password" autocomplete="new-password" placeholder="Repita a senha" />
+                            <small class="auth-error" data-auth-error="confirmarSenha"></small>
+                        </label>
+
+                        <button class="auth-submit" type="submit">
+                            Criar conta
+                        </button>
+
+                        <p class="auth-feedback" data-auth-feedback="cadastro" aria-live="polite"></p>
+                    </form>
+
+                    <div class="auth-switch">
+                        <button type="button" data-auth-target="login">
+                            Já tenho conta
+                        </button>
+                    </div>
+                </section>
+
+                <aside class="auth-visual auth-visual-register" aria-hidden="true">
+                    <div class="auth-orbit auth-orbit-primary"></div>
+                    <div class="auth-orbit auth-orbit-secondary"></div>
+                    <div class="auth-metric">
+                        <span>Quadros</span>
+                        <strong>03</strong>
+                    </div>
+                    <div class="auth-metric auth-metric-alt">
+                        <span>Convites</span>
+                        <strong>08</strong>
+                    </div>
+                </aside>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script type="module" src="js/login.js?v=20260524-12"></script>
+
+</body>
+
+</html>

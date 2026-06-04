@@ -11,15 +11,23 @@ export function inicializarTaskForm(elements, onSubmit) {
 
         const adicionou = await onSubmit({
             nome: texto,
-            status: TASK_STATUS.todo
+            status: TASK_STATUS.todo,
+            prioridade: elements.inputPrioridade.value,
+            dataCriacao: new Date().toISOString(),
+            dataLimite: elements.inputDataLimite.value || null
         })
 
         if (adicionou) {
             elements.inputTarefa.value = ""
+            elements.inputPrioridade.value = "media"
+            elements.inputDataLimite.value = ""
         }
     }
 
-    elements.botaoAdicionar.addEventListener("click", adicionar)
+    elements.botaoAdicionar.addEventListener("click", function (evento) {
+        evento.preventDefault()
+        adicionar()
+    })
 
     elements.inputTarefa.addEventListener("keydown", function (evento) {
         if (evento.key !== "Enter") {

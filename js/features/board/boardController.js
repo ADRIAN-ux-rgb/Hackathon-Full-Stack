@@ -1,13 +1,14 @@
-import { listarTarefas } from "../../api/tarefasApi.js"
-import { renderizarBoard } from "../../ui/boardView.js"
+import { listarTarefasUsuario } from "../../api/tarefasLocalApi.js"
+import { mostrarSkeletonBoard, renderizarBoard } from "../../ui/boardView.js"
 import { mostrarErro, limparMensagem } from "../../ui/feedback.js"
 import { toastError } from "../../ui/toast.js"
 import { criarDragAndDrop } from "./dragAndDrop.js"
 import { criarTaskActions } from "./taskActions.js"
 import { criarTaskFilters } from "./taskFilters.js"
 
-export function criarBoardController(elements, modal) {
+export function criarBoardController(elements, modals) {
     let tarefas = []
+    let usuarioAtual = null
     let filtros
 
     const dragAndDrop = criarDragAndDrop(elements.listas, function (tarefa) {
@@ -20,11 +21,11 @@ export function criarBoardController(elements, modal) {
         onStatusChange(tarefa) {
             actions.atualizar(tarefa)
         },
-        onEdit(tarefa) {
-            actions.atualizar(tarefa)
+        onEditRequest(tarefa) {
+            modals.edicao.abrir(tarefa)
         },
         onDeleteRequest(tarefa) {
-            modal.abrir(tarefa)
+            modals.exclusao.abrir(tarefa)
         }
     }
 
@@ -47,13 +48,26 @@ export function criarBoardController(elements, modal) {
         setTarefas(novasTarefas) {
             tarefas = novasTarefas
         },
+        getUsuarioAtual() {
+            return usuarioAtual
+        },
         mensagem: elements.mensagem,
         renderizar
     })
 
-    async function carregarTarefas() {
+    async function carregarTarefas(usuario) {
+        usuarioAtual = usuario || usuarioAtual
+
+        if (usuarioAtual === null) {
+            tarefas = []
+            renderizar()
+            return
+        }
+
+        mostrarSkeletonBoard(elements.listas)
+
         try {
-            tarefas = await listarTarefas()
+            tarefas = listarTarefasUsuario(usuarioAtual)
             limparMensagem(elements.mensagem)
             renderizar()
         } catch {
@@ -66,6 +80,7 @@ export function criarBoardController(elements, modal) {
     return {
         carregarTarefas,
         adicionarTarefa: actions.adicionar,
+        editarTarefa: actions.atualizar,
         confirmarExclusao: actions.excluir
     }
 }

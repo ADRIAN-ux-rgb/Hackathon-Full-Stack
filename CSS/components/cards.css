@@ -12,11 +12,11 @@ li {
     box-shadow: 0 8px 22px rgba(77,64,45,0.10);
     will-change: transform, opacity;
     transition:
-        transform 160ms ease,
-        box-shadow 160ms ease,
-        background 160ms ease,
-        border-color 160ms ease,
-        opacity 160ms ease;
+        transform 120ms ease,
+        box-shadow 120ms ease,
+        background 120ms ease,
+        border-color 120ms ease,
+        opacity 120ms ease;
 }
 
 li:hover {
@@ -55,6 +55,53 @@ li span {
     gap: 4px;
 }
 
+.task-priority,
+.task-deadline {
+    min-height: 24px;
+    padding: 0 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.task-priority-alta {
+    color: #df6d67;
+    background: rgba(239,119,112,0.11);
+    border: 1px solid rgba(239,119,112,0.18);
+}
+
+.task-priority-media {
+    color: #b9831f;
+    background: rgba(240,184,77,0.14);
+    border: 1px solid rgba(240,184,77,0.22);
+}
+
+.task-priority-baixa {
+    color: #4f8a59;
+    background: rgba(143,209,154,0.12);
+    border: 1px solid rgba(143,209,154,0.20);
+}
+
+.task-deadline {
+    color: var(--color-text-muted);
+    background: rgba(95,124,101,0.08);
+    border: 1px solid rgba(95,124,101,0.12);
+}
+
+body.dark .task-priority-media {
+    color: #f0b84d;
+}
+
+body.dark .task-priority-baixa {
+    color: #8fd19a;
+}
+
+body.dark .task-deadline {
+    color: #a8b6a6;
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.08);
+}
+
 .empty-state {
     cursor: default;
     color: var(--color-text-muted);
@@ -65,4 +112,41 @@ li span {
 
 .empty-state:hover {
     transform: none;
+}
+
+.task-skeleton {
+    cursor: default;
+    gap: 10px;
+    background: rgba(255,255,255,0.42);
+    border-color: rgba(90,75,55,0.07);
+    box-shadow: none;
+}
+
+.task-skeleton:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.task-skeleton-line {
+    display: block;
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(90,75,55,0.10);
+}
+
+.task-skeleton-title {
+    width: 72%;
+}
+
+.task-skeleton-meta {
+    width: 46%;
+}
+
+body.dark .task-skeleton {
+    background: rgba(255,255,255,0.035);
+    border-color: rgba(255,255,255,0.06);
+}
+
+body.dark .task-skeleton-line {
+    background: rgba(255,255,255,0.10);
 }

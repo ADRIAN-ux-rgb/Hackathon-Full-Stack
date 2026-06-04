@@ -5,7 +5,8 @@ function criarBotaoStatus(tarefa, status, onStatusChange) {
     botao.type = "button"
     botao.textContent = STATUS_LABELS[status]
     botao.classList.add("btn-status")
-    botao.addEventListener("click", function () {
+    botao.addEventListener("click", function (event) {
+        event.preventDefault()
         onStatusChange({
             ...tarefa,
             status
@@ -15,22 +16,14 @@ function criarBotaoStatus(tarefa, status, onStatusChange) {
     return botao
 }
 
-function criarBotaoEditar(tarefa, onEdit) {
+function criarBotaoEditar(tarefa, onEditRequest) {
     const botao = document.createElement("button")
     botao.type = "button"
     botao.textContent = "Editar"
     botao.classList.add("btn-editar")
-    botao.addEventListener("click", function () {
-        const novoTexto = prompt("Editar tarefa:", tarefa.nome)
-
-        if (novoTexto === null || novoTexto.trim() === "") {
-            return
-        }
-
-        onEdit({
-            ...tarefa,
-            nome: novoTexto.trim()
-        })
+    botao.addEventListener("click", function (event) {
+        event.preventDefault()
+        onEditRequest(tarefa)
     })
 
     return botao
@@ -41,25 +34,31 @@ function criarBotaoExcluir(tarefa, onDeleteRequest) {
     botao.type = "button"
     botao.textContent = "Excluir"
     botao.classList.add("btn-excluir")
-    botao.addEventListener("click", function () {
+    botao.addEventListener("click", function (event) {
+        event.preventDefault()
         onDeleteRequest(tarefa)
     })
 
     return botao
 }
 
-export function criarTaskCard(tarefa, handlers) {
+export function criarTaskCard(tarefa, handlers, options = {}) {
+    const prioridadeNormalizada = normalizarPrioridade(tarefa.prioridade)
+    const dataLimite = formatarDataLimite(tarefa.dataLimite)
     const item = document.createElement("li")
-    item.classList.add("task-card-enter")
     item.dataset.id = tarefa.id
     item.draggable = true
 
-    item.addEventListener("animationend", function () {
-        item.classList.remove("task-card-enter")
-    }, { once: true })
+    if (options.animarEntrada === true) {
+        item.classList.add("task-card-enter")
+        item.addEventListener("animationend", function () {
+            item.classList.remove("task-card-enter")
+        }, { once: true })
+    }
 
-    item.addEventListener("dragstart", function () {
+    item.addEventListener("dragstart", function (event) {
         item.classList.add("task-dragging")
+        event.dataTransfer.effectAllowed = "move"
         handlers.onDragStart(tarefa)
     })
 
@@ -79,10 +78,14 @@ export function criarTaskCard(tarefa, handlers) {
     info.classList.add("task-info")
 
     const prioridade = document.createElement("small")
-    prioridade.textContent = "Alta prioridade"
+    prioridade.classList.add("task-priority", `task-priority-${prioridadeNormalizada.valor}`)
+    prioridade.textContent = prioridadeNormalizada.icone === ""
+        ? `${prioridadeNormalizada.label} prioridade`
+        : `${prioridadeNormalizada.icone} ${prioridadeNormalizada.label} prioridade`
 
     const data = document.createElement("small")
-    data.textContent = "Hoje"
+    data.classList.add("task-deadline")
+    data.textContent = dataLimite
 
     info.appendChild(prioridade)
     info.appendChild(data)
@@ -96,7 +99,7 @@ export function criarTaskCard(tarefa, handlers) {
         }
     })
 
-    areaBotoes.appendChild(criarBotaoEditar(tarefa, handlers.onEdit))
+    areaBotoes.appendChild(criarBotaoEditar(tarefa, handlers.onEditRequest))
     areaBotoes.appendChild(criarBotaoExcluir(tarefa, handlers.onDeleteRequest))
 
     item.appendChild(topo)
@@ -104,4 +107,44 @@ export function criarTaskCard(tarefa, handlers) {
     item.appendChild(areaBotoes)
 
     return item
+}
+
+function normalizarPrioridade(prioridade) {
+    const valor = String(prioridade || "media").toLowerCase()
+
+    if (valor === "alta") {
+        return {
+            valor: "alta",
+            label: "Alta",
+            icone: ""
+        }
+    }
+
+    if (valor === "baixa") {
+        return {
+            valor: "baixa",
+            label: "Baixa",
+            icone: "\u2705"
+        }
+    }
+
+    return {
+        valor: "media",
+        label: "Média",
+        icone: "\u26A0\uFE0F"
+    }
+}
+
+function formatarDataLimite(dataLimite) {
+    if (!dataLimite) {
+        return "Sem prazo"
+    }
+
+    const partes = String(dataLimite).split("-")
+
+    if (partes.length !== 3) {
+        return "Sem prazo"
+    }
+
+    return `${partes[2]}/${partes[1]}/${partes[0]}`
 }

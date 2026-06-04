@@ -92,14 +92,18 @@ function criarItemNaTela(tarefa) {
     botaoEditar.textContent = "Editar"
     botaoEditar.classList.add("btn-editar")
     botaoEditar.addEventListener("click", function () {
-        const novoTexto = prompt("Editar tarefa:", tarefa.nome)
+        const novoTexto = input.value.trim()
 
-        if (novoTexto === null || novoTexto.trim() === "") {
+        if (novoTexto === "") {
+            input.value = tarefa.nome
+            input.focus()
+            input.select()
             return
         }
 
-        tarefa.nome = novoTexto.trim()
+        tarefa.nome = novoTexto
         atualizarTarefa(tarefa)
+        input.value = ""
     })
 
     const botaoExcluir = document.createElement("button")

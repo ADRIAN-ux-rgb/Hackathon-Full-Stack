@@ -1,17 +1,24 @@
-import { criarTarefa, atualizarTarefaApi, excluirTarefaApi } from "../../api/tarefasApi.js"
+import { criarTarefaUsuario, atualizarTarefaUsuario, excluirTarefaUsuario } from "../../api/tarefasLocalApi.js"
 import { mostrarErro, limparMensagem } from "../../ui/feedback.js"
 import { toastError, toastInfo, toastSuccess } from "../../ui/toast.js"
 import { normalizarStatus } from "../../utils/status.js"
 
-export function criarTaskActions({ getTarefas, setTarefas, mensagem, renderizar }) {
+export function criarTaskActions({ getTarefas, setTarefas, getUsuarioAtual, mensagem, renderizar }) {
     async function adicionar(tarefa) {
         if (tarefa === null) {
             mostrarErro(mensagem, "Digite o nome da tarefa")
             return false
         }
 
+        const usuario = getUsuarioAtual()
+
+        if (usuario === null) {
+            mostrarErro(mensagem, "Faca login para adicionar tarefas")
+            return false
+        }
+
         try {
-            const tarefaCriada = await criarTarefa(tarefa)
+            const tarefaCriada = criarTarefaUsuario(usuario, tarefa)
             setTarefas([...getTarefas(), tarefaCriada])
             limparMensagem(mensagem)
             renderizar()
@@ -25,11 +32,27 @@ export function criarTaskActions({ getTarefas, setTarefas, mensagem, renderizar 
     }
 
     async function atualizar(tarefa) {
+        const usuario = getUsuarioAtual()
+
+        if (usuario === null) {
+            mostrarErro(mensagem, "Faca login para atualizar tarefas")
+            toastError("Sessao nao encontrada.")
+            return
+        }
+
+        const tarefasAtuais = getTarefas()
+        const tarefaAnterior = tarefasAtuais.find(function (item) {
+            return item.id === tarefa.id
+        })
+
+        setTarefas(tarefasAtuais.map(function (item) {
+            return item.id === tarefa.id ? tarefa : item
+        }))
+        limparMensagem(mensagem)
+        renderizar()
+
         try {
-            const tarefaAnterior = getTarefas().find(function (item) {
-                return item.id === tarefa.id
-            })
-            const tarefaAtualizada = await atualizarTarefaApi(tarefa)
+            const tarefaAtualizada = atualizarTarefaUsuario(usuario, tarefa)
 
             setTarefas(getTarefas().map(function (item) {
                 return item.id === tarefaAtualizada.id ? tarefaAtualizada : item
@@ -38,12 +61,22 @@ export function criarTaskActions({ getTarefas, setTarefas, mensagem, renderizar 
             renderizar()
             mostrarToastAtualizacao(tarefaAnterior, tarefaAtualizada)
         } catch {
+            setTarefas(tarefasAtuais)
             mostrarErro(mensagem, "Nao foi possivel atualizar a tarefa")
             toastError("Erro de API ao atualizar tarefa.")
+            renderizar()
         }
     }
 
     async function excluir(tarefa) {
+        const usuario = getUsuarioAtual()
+
+        if (usuario === null) {
+            mostrarErro(mensagem, "Faca login para excluir tarefas")
+            toastError("Sessao nao encontrada.")
+            return
+        }
+
         const tarefasAtuais = getTarefas()
         setTarefas(tarefasAtuais.filter(function (item) {
             return item.id !== tarefa.id
@@ -51,7 +84,7 @@ export function criarTaskActions({ getTarefas, setTarefas, mensagem, renderizar 
         renderizar()
 
         try {
-            await excluirTarefaApi(tarefa.id)
+            excluirTarefaUsuario(usuario, tarefa.id)
             limparMensagem(mensagem)
             toastSuccess("Tarefa excluida com sucesso.")
         } catch {

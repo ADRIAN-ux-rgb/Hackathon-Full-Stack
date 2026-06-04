@@ -30,15 +30,25 @@ li.task-card-enter {
 
 li.task-dragging {
     cursor: grabbing;
-    opacity: 0.62;
-    transform: scale(0.985);
-    box-shadow: 0 18px 38px rgba(0,0,0,0.18);
+    opacity: 0.72;
+    transform: scale(0.99);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.14);
+}
+
+li.task-card-moving {
+    pointer-events: none;
+    transition:
+        transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 160ms ease,
+        background 160ms ease,
+        border-color 160ms ease,
+        opacity 160ms ease;
 }
 
 .kanban-drop-active {
     border-color: rgba(159,190,158,0.28);
     background:
-        linear-gradient(180deg, rgba(116,145,121,0.12), rgba(23,31,27,0.04)),
+        linear-gradient(180deg, rgba(116,145,121,0.08), rgba(23,31,27,0.02)),
         var(--color-surface);
 }
 
@@ -87,7 +97,7 @@ li.task-dragging {
 body.dark .kanban-drop-active {
     border-color: rgba(159,190,158,0.22);
     background:
-        linear-gradient(180deg, rgba(116,145,121,0.14), rgba(23,31,27,0.96)),
+        linear-gradient(180deg, rgba(116,145,121,0.10), rgba(23,31,27,0.94)),
         rgba(23,31,27,0.94);
 }
 

@@ -5,56 +5,88 @@
     <meta charset="UTF-8" />
     <title>Kanban</title>
 
+    <script>
+        (function () {
+            try {
+                if (localStorage.getItem("tema") === "dark") {
+                    document.documentElement.classList.add("dark")
+                }
+            } catch {
+                document.documentElement.classList.remove("dark")
+            }
+        })()
+    </script>
+
     <link rel="stylesheet" href="css/main.css?v=20260524-12" />
 </head>
 
-<body>
+<body class="auth-mode">
+
+    <script>
+        document.body.classList.toggle("dark", document.documentElement.classList.contains("dark"))
+        try {
+            document.body.classList.toggle("sidebar-collapsed", localStorage.getItem("kanban_sidebar_collapsed") === "true")
+        } catch {
+            document.body.classList.remove("sidebar-collapsed")
+        }
+    </script>
 
     <aside id="sidebar">
 
         <div class="sidebar-logo">
-            <span class="logo-icon">◐</span>
+            <span class="logo-icon">â—</span>
             <strong>FlowTask</strong>
         </div>
+
+        <button
+            id="sidebar-toggle"
+            class="sidebar-toggle"
+            type="button"
+            aria-label="Recolher sidebar"
+            aria-expanded="true"
+        >
+            <span aria-hidden="true">&lsaquo;</span>
+        </button>
 
         <nav class="sidebar-menu">
 
             <button class="menu-item ativo" type="button" data-view="tarefas">
                 <span class="menu-dot"></span>
-                Tarefas
+                <span class="menu-label">Tarefas</span>
             </button>
 
             <button class="menu-item" type="button" data-view="dashboard">
                 <span class="menu-dot"></span>
-                Dashboard
+                <span class="menu-label">Dashboard</span>
             </button>
 
             <button class="menu-item" type="button">
                 <span class="menu-dot"></span>
-                Calendário
+                CalendÃ¡rio
             </button>
 
             <button class="menu-item" type="button">
                 <span class="menu-dot"></span>
-                Relatórios
-            </button>
-
-            <button class="menu-item" type="button">
-                <span class="menu-dot"></span>
-                Perfil
+                RelatÃ³rios
             </button>
 
         </nav>
 
         <div class="sidebar-footer">
 
-            <div class="profile-mini">
+            <div
+                class="profile-mini"
+                id="profile-mini"
+                role="button"
+                tabindex="0"
+                aria-label="Abrir perfil"
+            >
 
-                <div class="avatar"></div>
+                <div class="profile-avatar" id="profile-avatar"></div>
 
                 <div class="profile-info">
-                    <strong>Adrian</strong>
-                    <small>Developer</small>
+                    <strong id="profile-name"></strong>
+                    <small id="profile-email"></small>
                 </div>
 
             </div>
@@ -112,7 +144,7 @@
                         </button>
 
                         <button class="task-filter-option" type="button" data-filter-status="done">
-                            Concluído
+                            ConcluÃ­do
                         </button>
                     </div>
 
@@ -136,7 +168,7 @@
                     </div>
 
                     <div id="coluna-done">
-                        <h2>Concluído</h2>
+                        <h2>ConcluÃ­do</h2>
 
                         <ul id="lista-done"></ul>
                     </div>
@@ -147,18 +179,199 @@
 
             </div>
 
-            <div id="formulario">
+            <div id="formulario" class="task-form">
 
                 <input
                     type="text"
                     id="input-tarefa"
+                    class="task-input"
                     placeholder="Nome da tarefa"
                 />
 
-                <button id="btn-adicionar" type="button">
-                    Adicionar
-                </button>
+                <div class="task-form-actions">
+                    <div class="task-field task-priority-field">
+                        <span class="task-field-icon" aria-hidden="true">!</span>
+                        <select id="input-prioridade" class="task-priority" aria-label="Prioridade da tarefa">
+                            <option value="baixa">Baixa</option>
+                            <option value="media" selected>Média</option>
+                            <option value="alta">Alta</option>
+                        </select>
+                    </div>
 
+                    <div class="task-field task-date-field">
+                        <span class="task-field-icon" aria-hidden="true">cal</span>
+                        <input
+                            type="date"
+                            id="input-data-limite"
+                            class="task-date"
+                            aria-label="Data limite da tarefa"
+                        />
+                    </div>
+
+                    <button id="btn-adicionar" class="task-submit" type="button">
+                        Adicionar
+                    </button>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section id="login-view" class="auth-view hidden" data-auth-view="login">
+
+            <div class="auth-shell">
+                <section class="auth-panel" aria-labelledby="login-title">
+                    <div class="auth-copy">
+                        <span class="auth-kicker">FlowTask Access</span>
+                        <h1 id="login-title">Login</h1>
+                        <p>
+                            Entre para continuar organizando tarefas, prioridades e entregas em um unico fluxo.
+                        </p>
+                    </div>
+
+                    <form class="auth-form" data-auth-form="login" novalidate>
+                        <label class="auth-field" for="login-email">
+                            <span>Email</span>
+                            <input
+                                id="login-email"
+                                data-auth-input="email"
+                                type="email"
+                                autocomplete="email"
+                                placeholder="seu@email.com"
+                            />
+                            <small class="auth-error" data-auth-error="email"></small>
+                        </label>
+
+                        <label class="auth-field" for="login-password">
+                            <span>Senha</span>
+                            <input
+                                id="login-password"
+                                data-auth-input="senha"
+                                type="password"
+                                autocomplete="current-password"
+                                placeholder="Digite sua senha"
+                            />
+                            <small class="auth-error" data-auth-error="senha"></small>
+                        </label>
+
+                        <button class="auth-submit" type="submit">
+                            Entrar
+                        </button>
+
+                        <p class="auth-feedback" data-auth-feedback="login" aria-live="polite"></p>
+                    </form>
+
+                    <div class="auth-switch">
+                        <span>Novo por aqui?</span>
+                        <button type="button" data-auth-target="cadastro">
+                            Criar conta
+                        </button>
+                    </div>
+                </section>
+
+                <aside class="auth-visual" aria-hidden="true">
+                    <div class="auth-orbit auth-orbit-primary"></div>
+                    <div class="auth-orbit auth-orbit-secondary"></div>
+                    <div class="auth-metric">
+                        <span>Foco</span>
+                        <strong>84%</strong>
+                    </div>
+                    <div class="auth-metric auth-metric-alt">
+                        <span>Fluxo ativo</span>
+                        <strong>12</strong>
+                    </div>
+                </aside>
+            </div>
+
+        </section>
+
+        <section id="cadastro-view" class="auth-view hidden" data-auth-view="cadastro">
+
+            <div class="auth-shell auth-shell-register">
+                <section class="auth-panel" aria-labelledby="cadastro-title">
+                    <div class="auth-copy">
+                        <span class="auth-kicker">FlowTask Setup</span>
+                        <h1 id="cadastro-title">Cadastro</h1>
+                        <p>
+                            Crie a base da sua conta para preparar o acesso quando a autenticacao real for ativada.
+                        </p>
+                    </div>
+
+                    <form class="auth-form" data-auth-form="cadastro" novalidate>
+                        <label class="auth-field" for="register-name">
+                            <span>Nome</span>
+                            <input
+                                id="register-name"
+                                data-auth-input="nome"
+                                type="text"
+                                autocomplete="name"
+                                placeholder="Seu nome"
+                            />
+                            <small class="auth-error" data-auth-error="nome"></small>
+                        </label>
+
+                        <label class="auth-field" for="register-email">
+                            <span>Email</span>
+                            <input
+                                id="register-email"
+                                data-auth-input="email"
+                                type="email"
+                                autocomplete="email"
+                                placeholder="seu@email.com"
+                            />
+                            <small class="auth-error" data-auth-error="email"></small>
+                        </label>
+
+                        <label class="auth-field" for="register-password">
+                            <span>Senha</span>
+                            <input
+                                id="register-password"
+                                data-auth-input="senha"
+                                type="password"
+                                autocomplete="new-password"
+                                placeholder="Crie uma senha"
+                            />
+                            <small class="auth-error" data-auth-error="senha"></small>
+                        </label>
+
+                        <label class="auth-field" for="register-confirm-password">
+                            <span>Confirmar senha</span>
+                            <input
+                                id="register-confirm-password"
+                                data-auth-input="confirmarSenha"
+                                type="password"
+                                autocomplete="new-password"
+                                placeholder="Repita a senha"
+                            />
+                            <small class="auth-error" data-auth-error="confirmarSenha"></small>
+                        </label>
+
+                        <button class="auth-submit" type="submit">
+                            Criar conta
+                        </button>
+
+                        <p class="auth-feedback" data-auth-feedback="cadastro" aria-live="polite"></p>
+                    </form>
+
+                    <div class="auth-switch">
+                        <button type="button" data-auth-target="login">
+                            JÃ¡ tenho conta
+                        </button>
+                    </div>
+                </section>
+
+                <aside class="auth-visual auth-visual-register" aria-hidden="true">
+                    <div class="auth-orbit auth-orbit-primary"></div>
+                    <div class="auth-orbit auth-orbit-secondary"></div>
+                    <div class="auth-metric">
+                        <span>Quadros</span>
+                        <strong>03</strong>
+                    </div>
+                    <div class="auth-metric auth-metric-alt">
+                        <span>Convites</span>
+                        <strong>08</strong>
+                    </div>
+                </aside>
             </div>
 
         </section>
@@ -191,7 +404,7 @@
                     <article class="dashboard-card">
                         <span>A fazer</span>
                         <strong id="dashboard-todo">0</strong>
-                        <small>Demandas aguardando início</small>
+                        <small>Demandas aguardando inÃ­cio</small>
                     </article>
 
                     <article class="dashboard-card">
@@ -201,7 +414,7 @@
                     </article>
 
                     <article class="dashboard-card">
-                        <span>Concluídas</span>
+                        <span>ConcluÃ­das</span>
                         <strong id="dashboard-done">0</strong>
                         <small>Entregas finalizadas</small>
                     </article>
@@ -210,7 +423,7 @@
 
                 <section class="dashboard-chart" aria-labelledby="dashboard-chart-title">
                     <div class="dashboard-chart-copy">
-                        <span>Distribuição</span>
+                        <span>DistribuiÃ§Ã£o</span>
                         <strong id="dashboard-chart-title">Tarefas por status</strong>
                         <small id="dashboard-chart-label">Nenhuma tarefa cadastrada ainda</small>
                     </div>
@@ -222,7 +435,7 @@
                                 class="dashboard-pie"
                                 viewBox="0 0 120 120"
                                 role="img"
-                                aria-label="Distribuição das tarefas por status"
+                                aria-label="DistribuiÃ§Ã£o das tarefas por status"
                             >
                                 <circle class="dashboard-pie-base" cx="60" cy="60" r="44"></circle>
                                 <circle id="dashboard-pie-todo" class="dashboard-pie-segment dashboard-pie-segment-todo" cx="60" cy="60" r="44"></circle>
@@ -236,7 +449,7 @@
                             </div>
                         </div>
 
-                        <ul class="dashboard-chart-legend" aria-label="Legenda do gráfico">
+                        <ul class="dashboard-chart-legend" aria-label="Legenda do grÃ¡fico">
                             <li>
                                 <span class="legend-swatch legend-swatch-todo"></span>
                                 <span>A fazer</span>
@@ -249,18 +462,18 @@
                             </li>
                             <li>
                                 <span class="legend-swatch legend-swatch-done"></span>
-                                <span>Concluído</span>
+                                <span>ConcluÃ­do</span>
                                 <strong id="dashboard-legend-done">0</strong>
                             </li>
                         </ul>
                     </div>
                 </section>
 
-                <section class="dashboard-progress" aria-label="Porcentagem concluída">
+                <section class="dashboard-progress" aria-label="Porcentagem concluÃ­da">
                     <div class="dashboard-progress-copy">
-                        <span>Conclusão</span>
+                        <span>ConclusÃ£o</span>
                         <strong id="dashboard-percent">0%</strong>
-                        <small id="dashboard-progress-label">Nenhuma tarefa concluída ainda</small>
+                        <small id="dashboard-progress-label">Nenhuma tarefa concluÃ­da ainda</small>
                     </div>
 
                     <div class="dashboard-progress-track" aria-hidden="true">
@@ -274,13 +487,61 @@
 
         </section>
 
+        <section id="profile-view" class="app-view hidden" data-view-panel="profile">
+
+            <div class="profile-page">
+                <section class="profile-card" aria-labelledby="profile-page-name">
+                    <div class="profile-card-main">
+                        <div class="profile-avatar profile-avatar-large" id="profile-avatar-large"></div>
+
+                        <div class="profile-card-copy">
+                            <span class="profile-kicker">Perfil</span>
+                            <h1 id="profile-page-name"></h1>
+                            <p id="profile-page-email"></p>
+                            <span class="profile-status">
+                                <span class="profile-status-dot"></span>
+                                Online
+                            </span>
+                        </div>
+                    </div>
+
+                    <button id="profile-logout" class="logout-button" type="button">
+                        Sair
+                    </button>
+                </section>
+
+                <section class="profile-stats" aria-label="Resumo das tarefas do usuario">
+                    <article class="profile-stat-card profile-stat-card-total">
+                        <span>Total de tarefas</span>
+                        <strong id="profile-total-tasks">0</strong>
+                    </article>
+
+                    <article class="profile-stat-card">
+                        <span>A fazer</span>
+                        <strong id="profile-todo-tasks">0</strong>
+                    </article>
+
+                    <article class="profile-stat-card">
+                        <span>Em andamento</span>
+                        <strong id="profile-doing-tasks">0</strong>
+                    </article>
+
+                    <article class="profile-stat-card">
+                        <span>ConcluÃ­das</span>
+                        <strong id="profile-done-tasks">0</strong>
+                    </article>
+                </section>
+            </div>
+
+        </section>
+
     </main>
 
-    <div id="modal-confirmacao" class="hidden">
+    <div id="modal-confirmacao" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="delete-task-title">
 
         <div class="modal-box">
 
-            <h3>Excluir tarefa</h3>
+            <h3 id="delete-task-title">Excluir tarefa</h3>
 
             <p>
                 Tem certeza que deseja excluir?
@@ -288,12 +549,48 @@
 
             <div class="modal-botoes">
 
-                <button id="btn-cancelar">
+                <button id="btn-cancelar" type="button">
                     Cancelar
                 </button>
 
-                <button id="btn-confirmar">
+                <button id="btn-confirmar" type="button">
                     Excluir
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="modal-edicao" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="edit-task-title">
+
+        <div class="modal-box modal-box-premium">
+
+            <h3 id="edit-task-title">Editar tarefa</h3>
+
+            <label class="edit-task-label" for="edit-task-input">
+                Nome da tarefa
+            </label>
+
+            <input
+                type="text"
+                id="edit-task-input"
+                class="edit-task-input"
+                autocomplete="off"
+                maxlength="120"
+            />
+
+            <p id="edit-task-error" class="edit-task-error" aria-live="polite"></p>
+
+            <div class="modal-botoes">
+
+                <button id="btn-cancelar-edicao" class="btn-modal-secondary" type="button">
+                    Cancelar
+                </button>
+
+                <button id="btn-salvar-edicao" class="btn-modal-primary" type="button">
+                    Salvar
                 </button>
 
             </div>

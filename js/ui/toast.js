@@ -1,5 +1,5 @@
-const TOAST_DURATION = 4000
-const TOAST_EXIT_DURATION = 240
+const TOAST_DURATION = 8000
+const TOAST_EXIT_DURATION = 400
 
 let container = null
 
@@ -66,9 +66,9 @@ export function criarToast({ type = "info", title, message, duration = TOAST_DUR
         removerToast(toast)
     })
 
-    window.requestAnimationFrame(function () {
-        toast.classList.add("toast-visible")
-    })
+   window.setTimeout(function () {
+    toast.classList.add("toast-visible")
+}, 50)
 
     return toast
 }
@@ -83,22 +83,22 @@ function removerToast(toast) {
 
     window.setTimeout(function () {
         toast.remove()
-
-        if (container !== null && container.children.length === 0) {
-            container.remove()
-            container = null
-        }
     }, TOAST_EXIT_DURATION)
 }
 
 function getToastContainer() {
-    if (container !== null) {
+    if (container !== null && container.isConnected) {
         return container
     }
 
-    container = document.createElement("div")
-    container.className = "toast-container"
-    container.setAttribute("aria-label", "Notificacoes")
+    container = document.querySelector(".toast-container")
+
+    if (container === null) {
+        container = document.createElement("div")
+        container.className = "toast-container"
+        container.setAttribute("aria-label", "Notificacoes")
+    }
+
     document.body.appendChild(container)
 
     return container
