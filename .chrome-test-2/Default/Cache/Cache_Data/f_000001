@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Kanban</title>
+
+    <script>
+        (function () {
+            try {
+                if (localStorage.getItem("tema") === "dark") {
+                    document.documentElement.classList.add("dark")
+                }
+            } catch {
+                document.documentElement.classList.remove("dark")
+            }
+        })()
+    </script>
+
+    <link rel="stylesheet" href="css/main.css?v=20260605-9" />
+</head>
+
+<body class="auth-mode">
+
+    <script>
+        document.body.classList.toggle("dark", document.documentElement.classList.contains("dark"))
+        try {
+            document.body.classList.toggle("sidebar-collapsed", localStorage.getItem("kanban_sidebar_collapsed") === "true")
+        } catch {
+            document.body.classList.remove("sidebar-collapsed")
+        }
+    </script>
+
+    <aside id="sidebar">
+
+        <div class="sidebar-logo">
+            <span class="logo-icon" aria-hidden="true">F</span>
+            <strong>FlowTask</strong>
+        </div>
+
+        <button
+            id="sidebar-toggle"
+            class="sidebar-toggle"
+            type="button"
+            aria-label="Recolher sidebar"
+            aria-expanded="true"
+        >
+            <span aria-hidden="true">&lsaquo;</span>
+        </button>
+
+        <nav class="sidebar-menu">
+
+            <button class="menu-item ativo" type="button" data-view="tarefas">
+                <span class="menu-dot"></span>
+                <span class="menu-label">Board</span>
+            </button>
+
+            <button class="menu-item" type="button" data-view="dashboard">
+                <span class="menu-dot"></span>
+                <span class="menu-label">Dashboard</span>
+            </button>
+
+            <button class="menu-item" type="button" data-view="reports">
+                <span class="menu-dot"></span>
+                <span class="menu-label">Relatórios</span>
+            </button>
+
+        </nav>
+
+        <div class="sidebar-footer">
+
+            <div
+                class="profile-mini"
+                id="profile-mini"
+                role="button"
+                tabindex="0"
+                aria-label="Abrir perfil"
+            >
+
+                <div class="profile-avatar" id="profile-avatar"></div>
+
+                <div class="profile-info">
+                    <strong id="profile-name"></strong>
+                    <small id="profile-email"></small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <main id="app-content">
+
+        <section id="tarefas-view" class="app-view" data-view-panel="tarefas">
+
+            <header id="page-header">
+                <h1>Minhas Tarefas</h1>
+
+                <p class="subtitle">
+                    Organize suas demandas e acompanhe seu fluxo de trabalho.
+                </p>
+            </header>
+
+            <div id="lampada-container">
+
+                <div id="lampada" aria-hidden="true">
+                    <div id="luz"></div>
+                </div>
+
+                <button
+                    id="corda"
+                    type="button"
+                    aria-label="Alternar entre tema claro e escuro"
+                    title="Alternar tema"
+                ></button>
+
+            </div>
+
+            <div id="workspace">
+
+                <section class="task-filters" aria-label="Filtros de tarefas">
+                    <div class="task-search">
+                        <label for="task-search-input">Buscar tarefa</label>
+                        <input
+                            type="search"
+                            id="task-search-input"
+                            placeholder="Buscar por nome"
+                            autocomplete="off"
+                        />
+                    </div>
+
+                    <div class="task-status-filter" role="group" aria-label="Filtrar por status">
+                        <button class="task-filter-option ativo" type="button" data-filter-status="all">
+                            Todos
+                        </button>
+
+                        <button class="task-filter-option" type="button" data-filter-status="todo">
+                            A Fazer
+                        </button>
+
+                        <button class="task-filter-option" type="button" data-filter-status="doing">
+                            Em Andamento
+                        </button>
+
+                        <button class="task-filter-option" type="button" data-filter-status="done">
+                            Concluído
+                        </button>
+                    </div>
+
+                    <button id="task-clear-filters" class="task-clear-filters" type="button">
+                        Limpar
+                    </button>
+                </section>
+
+                <div id="board">
+
+                    <div id="coluna-todo">
+                        <h2>A Fazer</h2>
+
+                        <ul id="lista-todo"></ul>
+                    </div>
+
+                    <div id="coluna-doing">
+                        <h2>Em Andamento</h2>
+
+                        <ul id="lista-doing"></ul>
+                    </div>
+
+                    <div id="coluna-done">
+                        <h2>Concluído</h2>
+
+                        <ul id="lista-done"></ul>
+                    </div>
+
+                </div>
+
+                <p id="mensagem"></p>
+
+            </div>
+
+            <button
+                id="btn-abrir-formulario"
+                class="task-form-launcher"
+                type="button"
+                aria-controls="formulario"
+                aria-expanded="false"
+            >
+                <span aria-hidden="true">+</span>
+                Nova tarefa
+            </button>
+
+            <div id="formulario" class="task-form" aria-hidden="true">
+
+                <input
+                    type="text"
+                    id="input-tarefa"
+                    class="task-input"
+                    placeholder="Nome da tarefa"
+                />
+
+                <div class="task-form-actions">
+                    <div class="task-field task-type-field">
+                        <select id="input-tipo" class="task-type-select" aria-label="Tipo da tarefa">
+                            <option value="BUG">BUG</option>
+                            <option value="FEATURE" selected>FEATURE</option>
+                            <option value="REFACTOR">REFACTOR</option>
+                            <option value="TEST">TEST</option>
+                            <option value="DOC">DOC</option>
+                            <option value="DEPLOY">DEPLOY</option>
+                            <option value="HOTFIX">HOTFIX</option>
+                        </select>
+                    </div>
+
+                    <div class="task-field task-priority-field" data-priority="media">
+                        <span class="task-field-icon" aria-hidden="true">!</span>
+                        <select id="input-prioridade" class="task-priority" aria-label="Prioridade da tarefa">
+                            <option value="baixa">Baixa</option>
+                            <option value="media" selected>Média</option>
+                            <option value="alta">Alta</option>
+                        </select>
+                    </div>
+
+                    <div
+                        class="task-field task-date-field"
+                        data-date-picker
+                        role="button"
+                        tabindex="0"
+                        aria-label="Abrir calendário para escolher a data limite"
+                    >
+                        <span class="task-field-icon" aria-hidden="true">cal</span>
+                        <input
+                            type="date"
+                            id="input-data-limite"
+                            class="task-date"
+                            aria-label="Data limite da tarefa"
+                        />
+                    </div>
+
+                    <div class="task-form-buttons">
+                        <button id="btn-cancelar-tarefa" class="task-cancel" type="button">
+                            Cancelar
+                        </button>
+                        <button id="btn-adicionar" class="task-submit" type="button">
+                            Adicionar
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section id="login-view" class="auth-view hidden" data-auth-view="login">
+
+            <div class="auth-shell">
+                <section class="auth-panel" aria-labelledby="login-title">
+                    <div class="auth-copy">
+                        <span class="auth-kicker">FlowTask Access</span>
+                        <h1 id="login-title">Login</h1>
+                        <p>
+                            Entre para continuar organizando tarefas, prioridades e entregas em um único fluxo.
+                        </p>
+                    </div>
+
+                    <form class="auth-form" data-auth-form="login" novalidate>
+                        <label class="auth-field" for="login-email">
+                            <span>Email</span>
+                            <input
+                                id="login-email"
+                                data-auth-input="email"
+                                type="email"
+                                autocomplete="email"
+                                placeholder="seu@email.com"
+                            />
+                            <small class="auth-error" data-auth-error="email"></small>
+                        </label>
+
+                        <label class="auth-field" for="login-password">
+                            <span>Senha</span>
+                            <input
+                                id="login-password"
+                                data-auth-input="senha"
+                                type="password"
+                                autocomplete="current-password"
+                                placeholder="Digite sua senha"
+                            />
+                            <small class="auth-error" data-auth-error="senha"></small>
+                        </label>
+
+                        <button class="auth-submit" type="submit">
+                            Entrar
+                        </button>
+
+                        <p class="auth-feedback" data-auth-feedback="login" aria-live="polite"></p>
+                    </form>
+
+                    <div class="auth-switch">
+                        <span>Novo por aqui?</span>
+                        <button type="button" data-auth-target="cadastro">
+                            Criar conta
+                        </button>
+                    </div>
+                </section>
+
+                <aside class="auth-visual" aria-hidden="true">
+                    <div class="auth-orbit auth-orbit-primary"></div>
+                    <div class="auth-orbit auth-orbit-secondary"></div>
+                    <div class="auth-metric">
+                        <span>Foco</span>
+                        <strong>84%</strong>
+                    </div>
+                    <div class="auth-metric auth-metric-alt">
+                        <span>Fluxo ativo</span>
+                        <strong>12</strong>
+                    </div>
+                </aside>
+            </div>
+
+        </section>
+
+        <section id="cadastro-view" class="auth-view hidden" data-auth-view="cadastro">
+
+            <div class="auth-shell auth-shell-register">
+                <section class="auth-panel" aria-labelledby="cadastro-title">
+                    <div class="auth-copy">
+                        <span class="auth-kicker">FlowTask Setup</span>
+                        <h1 id="cadastro-title">Cadastro</h1>
+                        <p>
+                            Crie a base da sua conta para preparar o acesso quando a autenticacao real for ativada.
+                        </p>
+                    </div>
+
+                    <form class="auth-form" data-auth-form="cadastro" novalidate>
+                        <label class="auth-field" for="register-name">
+                            <span>Nome</span>
+                            <input
+                                id="register-name"
+                                data-auth-input="nome"
+                                type="text"
+                                autocomplete="name"
+                                placeholder="Seu nome"
+                            />
+                            <small class="auth-error" data-auth-error="nome"></small>
+                        </label>
+
+                        <label class="auth-field" for="register-email">
+                            <span>Email</span>
+                            <input
+                                id="register-email"
+                                data-auth-input="email"
+                                type="email"
+                                autocomplete="email"
+                                placeholder="seu@email.com"
+                            />
+                            <small class="auth-error" data-auth-error="email"></small>
+                        </label>
+
+                        <label class="auth-field" for="register-password">
+                            <span>Senha</span>
+                            <input
+                                id="register-password"
+                                data-auth-input="senha"
+                                type="password"
+                                autocomplete="new-password"
+                                placeholder="Crie uma senha"
+                            />
+                            <small class="auth-error" data-auth-error="senha"></small>
+                        </label>
+
+                        <label class="auth-field" for="register-confirm-password">
+                            <span>Confirmar senha</span>
+                            <input
+                                id="register-confirm-password"
+                                data-auth-input="confirmarSenha"
+                                type="password"
+                                autocomplete="new-password"
+                                placeholder="Repita a senha"
+                            />
+                            <small class="auth-error" data-auth-error="confirmarSenha"></small>
+                        </label>
+
+                        <button class="auth-submit" type="submit">
+                            Criar conta
+                        </button>
+
+                        <p class="auth-feedback" data-auth-feedback="cadastro" aria-live="polite"></p>
+                    </form>
+
+                    <div class="auth-switch">
+                        <button type="button" data-auth-target="login">
+                            Já tenho conta
+                        </button>
+                    </div>
+                </section>
+
+                <aside class="auth-visual auth-visual-register" aria-hidden="true">
+                    <div class="auth-orbit auth-orbit-primary"></div>
+                    <div class="auth-orbit auth-orbit-secondary"></div>
+                    <div class="auth-metric">
+                        <span>Quadros</span>
+                        <strong>03</strong>
+                    </div>
+                    <div class="auth-metric auth-metric-alt">
+                        <span>Convites</span>
+                        <strong>08</strong>
+                    </div>
+                </aside>
+            </div>
+
+        </section>
+
+        <section id="dashboard-view" class="app-view hidden" data-view-panel="dashboard">
+
+            <header id="dashboard-header">
+                <div>
+                    <h1>Dashboard</h1>
+                    <p class="subtitle">
+                        Acompanhe o progresso geral das suas tarefas.
+                    </p>
+                </div>
+
+                <button id="dashboard-refresh" type="button">
+                    Atualizar
+                </button>
+            </header>
+
+            <div id="dashboard-content">
+
+                <section class="dashboard-summary" aria-label="Resumo das tarefas">
+
+                    <article class="dashboard-card dashboard-card-total">
+                        <span>Total</span>
+                        <strong id="dashboard-total">0</strong>
+                        <small>Itens no quadro</small>
+                    </article>
+
+                    <article class="dashboard-card">
+                        <span>A fazer</span>
+                        <strong id="dashboard-todo">0</strong>
+                        <small>Demandas aguardando início</small>
+                    </article>
+
+                    <article class="dashboard-card">
+                        <span>Em andamento</span>
+                        <strong id="dashboard-doing">0</strong>
+                        <small>Trabalho em progresso</small>
+                    </article>
+
+                    <article class="dashboard-card">
+                        <span>Concluídas</span>
+                        <strong id="dashboard-done">0</strong>
+                        <small>Entregas finalizadas</small>
+                    </article>
+
+                </section>
+
+                <section class="dashboard-chart" aria-labelledby="dashboard-chart-title">
+                    <div class="dashboard-chart-copy">
+                        <span>Distribuição</span>
+                        <strong id="dashboard-chart-title">Tarefas por status</strong>
+                        <small id="dashboard-chart-label">Nenhuma tarefa cadastrada ainda</small>
+                    </div>
+
+                    <div class="dashboard-chart-body">
+                        <div class="dashboard-pie-wrap">
+                            <svg
+                                id="dashboard-pie-chart"
+                                class="dashboard-pie"
+                                viewBox="0 0 120 120"
+                                role="img"
+                                aria-label="Distribuição das tarefas por status"
+                            >
+                                <circle class="dashboard-pie-base" cx="60" cy="60" r="44"></circle>
+                                <circle id="dashboard-pie-todo" class="dashboard-pie-segment dashboard-pie-segment-todo" cx="60" cy="60" r="44"></circle>
+                                <circle id="dashboard-pie-doing" class="dashboard-pie-segment dashboard-pie-segment-doing" cx="60" cy="60" r="44"></circle>
+                                <circle id="dashboard-pie-done" class="dashboard-pie-segment dashboard-pie-segment-done" cx="60" cy="60" r="44"></circle>
+                            </svg>
+
+                            <div class="dashboard-pie-center" aria-hidden="true">
+                                <strong id="dashboard-pie-total">0</strong>
+                                <span>total</span>
+                            </div>
+                        </div>
+
+                        <ul class="dashboard-chart-legend" aria-label="Legenda do gráfico">
+                            <li>
+                                <span class="legend-swatch legend-swatch-todo"></span>
+                                <span>A fazer</span>
+                                <strong id="dashboard-legend-todo">0</strong>
+                            </li>
+                            <li>
+                                <span class="legend-swatch legend-swatch-doing"></span>
+                                <span>Em andamento</span>
+                                <strong id="dashboard-legend-doing">0</strong>
+                            </li>
+                            <li>
+                                <span class="legend-swatch legend-swatch-done"></span>
+                                <span>Concluídas</span>
+                                <strong id="dashboard-legend-done">0</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <div class="dashboard-detail-grid">
+                    <section class="dashboard-priority" aria-labelledby="dashboard-priority-title">
+                        <div class="dashboard-section-heading">
+                            <span>Distribuição</span>
+                            <strong id="dashboard-priority-title">Tarefas por prioridade</strong>
+                        </div>
+
+                        <div class="dashboard-priority-chart">
+                            <div class="priority-bar-row priority-bar-high">
+                                <div><span>Alta</span><strong id="dashboard-priority-high-value">0</strong></div>
+                                <div class="priority-bar-track"><span id="dashboard-priority-high"></span></div>
+                            </div>
+                            <div class="priority-bar-row priority-bar-medium">
+                                <div><span>Média</span><strong id="dashboard-priority-medium-value">0</strong></div>
+                                <div class="priority-bar-track"><span id="dashboard-priority-medium"></span></div>
+                            </div>
+                            <div class="priority-bar-row priority-bar-low">
+                                <div><span>Baixa</span><strong id="dashboard-priority-low-value">0</strong></div>
+                                <div class="priority-bar-track"><span id="dashboard-priority-low"></span></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="dashboard-progress" aria-label="Taxa de conclusão geral">
+                        <div class="dashboard-progress-copy">
+                            <span>Taxa de conclusão</span>
+                            <strong id="dashboard-percent">0%</strong>
+                            <small id="dashboard-progress-label">Nenhuma tarefa concluída ainda</small>
+                        </div>
+
+                        <div class="dashboard-progress-track" aria-hidden="true">
+                            <div id="dashboard-progress-bar"></div>
+                        </div>
+                    </section>
+                </div>
+
+                <section class="dashboard-deadlines" aria-labelledby="dashboard-deadlines-title">
+                    <div class="dashboard-section-heading">
+                        <span>Agenda</span>
+                        <strong id="dashboard-deadlines-title">Prazos próximos</strong>
+                        <small>Tarefas pendentes com vencimento nos próximos 3 dias</small>
+                    </div>
+                    <div id="dashboard-deadlines-list" class="dashboard-deadlines-list"></div>
+                </section>
+
+                <section class="dashboard-types" aria-labelledby="dashboard-types-title">
+                    <div class="dashboard-section-heading">
+                        <span>Classificação</span>
+                        <strong id="dashboard-types-title">Tarefas por tipo</strong>
+                        <small>Distribuição das demandas técnicas do quadro</small>
+                    </div>
+                    <div id="dashboard-types-list" class="dashboard-types-list"></div>
+                </section>
+
+            </div>
+
+            <p id="dashboard-message"></p>
+
+        </section>
+
+        <section id="reports-view" class="app-view hidden" data-view-panel="reports">
+            <div class="reports-page">
+                <header class="reports-header">
+                    <div>
+                        <span class="reports-kicker">Visão consolidada</span>
+                        <h1>Relatórios</h1>
+                        <p>Indicadores de entrega, qualidade e prazos das demandas técnicas.</p>
+                    </div>
+                    <button id="reports-refresh" type="button">Atualizar</button>
+                </header>
+
+                <div class="reports-period-grid">
+                    <section class="reports-panel" aria-labelledby="reports-week-title">
+                        <div class="reports-panel-heading">
+                            <span>Últimos 7 dias</span>
+                            <h2 id="reports-week-title">Resumo semanal</h2>
+                        </div>
+                        <div class="reports-metrics">
+                            <article><span>Criadas</span><strong id="reports-week-created">0</strong></article>
+                            <article><span>Concluídas</span><strong id="reports-week-done">0</strong></article>
+                            <article><span>Em atraso</span><strong id="reports-week-overdue">0</strong></article>
+                        </div>
+                    </section>
+
+                    <section class="reports-panel" aria-labelledby="reports-month-title">
+                        <div class="reports-panel-heading">
+                            <span>Mês atual</span>
+                            <h2 id="reports-month-title">Resumo mensal</h2>
+                        </div>
+                        <div class="reports-metrics">
+                            <article><span>Criadas</span><strong id="reports-month-created">0</strong></article>
+                            <article><span>Concluídas</span><strong id="reports-month-done">0</strong></article>
+                            <article><span>Conclusão</span><strong id="reports-month-rate">0%</strong></article>
+                        </div>
+                    </section>
+                </div>
+
+                <section class="reports-panel reports-types-panel" aria-labelledby="reports-types-title">
+                    <div class="reports-panel-heading">
+                        <span>Entregas concluídas</span>
+                        <h2 id="reports-types-title">Classificação por tipo</h2>
+                    </div>
+                    <div id="reports-types-list" class="reports-types-list"></div>
+                </section>
+
+                <div class="reports-list-grid">
+                    <section class="reports-panel" aria-labelledby="reports-overdue-title">
+                        <div class="reports-panel-heading">
+                            <span>Atenção necessária</span>
+                            <h2 id="reports-overdue-title">Tarefas em atraso</h2>
+                        </div>
+                        <div id="reports-overdue-list" class="reports-task-list"></div>
+                    </section>
+
+                    <section class="reports-panel" aria-labelledby="reports-upcoming-title">
+                        <div class="reports-panel-heading">
+                            <span>Próximos 7 dias</span>
+                            <h2 id="reports-upcoming-title">Próximos vencimentos</h2>
+                        </div>
+                        <div id="reports-upcoming-list" class="reports-task-list"></div>
+                    </section>
+                </div>
+
+                <p id="reports-message"></p>
+            </div>
+        </section>
+
+        <section id="profile-view" class="app-view hidden" data-view-panel="profile">
+
+            <div class="profile-page">
+                <section class="profile-card" aria-labelledby="profile-page-name">
+                    <div class="profile-card-main">
+                        <div class="profile-avatar profile-avatar-large" id="profile-avatar-large"></div>
+
+                        <div class="profile-card-copy">
+                            <span class="profile-kicker">Perfil</span>
+                            <h1 id="profile-page-name"></h1>
+                            <p id="profile-page-email"></p>
+                            <span class="profile-status">
+                                <span class="profile-status-dot"></span>
+                                Online
+                            </span>
+                        </div>
+                    </div>
+
+                    <button id="profile-logout" class="logout-button" type="button">
+                        Sair
+                    </button>
+                </section>
+
+                <section class="profile-stats" aria-label="Resumo das tarefas do usuario">
+                    <article class="profile-stat-card profile-stat-card-total">
+                        <span>Total de tarefas</span>
+                        <strong id="profile-total-tasks">0</strong>
+                    </article>
+
+                    <article class="profile-stat-card">
+                        <span>A fazer</span>
+                        <strong id="profile-todo-tasks">0</strong>
+                    </article>
+
+                    <article class="profile-stat-card">
+                        <span>Em andamento</span>
+                        <strong id="profile-doing-tasks">0</strong>
+                    </article>
+
+                    <article class="profile-stat-card">
+                        <span>Concluídas</span>
+                        <strong id="profile-done-tasks">0</strong>
+                    </article>
+                </section>
+            </div>
+
+        </section>
+
+    </main>
+
+    <div id="modal-confirmacao" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="delete-task-title">
+
+        <div class="modal-box">
+
+            <h3 id="delete-task-title">Excluir tarefa</h3>
+
+            <p>
+                Tem certeza que deseja excluir?
+            </p>
+
+            <div class="modal-botoes">
+
+                <button id="btn-cancelar" type="button">
+                    Cancelar
+                </button>
+
+                <button id="btn-confirmar" type="button">
+                    Excluir
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="modal-edicao" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="edit-task-title">
+
+        <div class="modal-box modal-box-premium">
+
+            <h3 id="edit-task-title">Editar tarefa</h3>
+
+            <label class="edit-task-label" for="edit-task-input">
+                Nome da tarefa
+            </label>
+
+            <input
+                type="text"
+                id="edit-task-input"
+                class="edit-task-input"
+                autocomplete="off"
+                maxlength="120"
+            />
+
+            <p id="edit-task-error" class="edit-task-error" aria-live="polite"></p>
+
+            <div class="modal-botoes">
+
+                <button id="btn-cancelar-edicao" class="btn-modal-secondary" type="button">
+                    Cancelar
+                </button>
+
+                <button id="btn-salvar-edicao" class="btn-modal-primary" type="button">
+                    Salvar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script type="module" src="js/main.js?v=20260605-9"></script>
+
+</body>
+
+</html>

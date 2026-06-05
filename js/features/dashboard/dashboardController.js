@@ -27,7 +27,7 @@ export function criarDashboardController(elements, getUsuarioAtual) {
             renderizarDashboard(tarefas, elements.dashboard)
             limparMensagem(elements.dashboard.message)
         } catch {
-            mostrarErro(elements.dashboard.message, "Nao foi possivel carregar o dashboard")
+            mostrarErro(elements.dashboard.message, "Não foi possível carregar o dashboard")
             toastError("Erro ao carregar o dashboard.")
         } finally {
             carregando = false

@@ -5,6 +5,7 @@ import { inicializarDarkMode } from "./features/theme/darkMode.js"
 import { inicializarTaskForm } from "./features/task-form/taskForm.js"
 import { criarBoardController } from "./features/board/boardController.js"
 import { criarDashboardController } from "./features/dashboard/dashboardController.js"
+import { criarReportsController } from "./features/reports/reportsController.js"
 import { carregarUsuarioLogado, criarProfileController } from "./features/profile/profileController.js"
 
 function inicializarAplicacao() {
@@ -35,6 +36,9 @@ function inicializarAplicacao() {
     const dashboardController = criarDashboardController(elements, function () {
         return usuarioLogado
     })
+    const reportsController = criarReportsController(elements, function () {
+        return usuarioLogado
+    })
     const profileController = criarProfileController(elements, function () {
         return usuarioLogado
     })
@@ -42,6 +46,7 @@ function inicializarAplicacao() {
     inicializarTaskForm(elements, boardController.adicionarTarefa)
     inicializarNavegacao(elements, {
         dashboard: dashboardController,
+        reports: reportsController,
         profile: profileController
     })
     abrirAppAutenticado(usuarioLogado, boardController, profileController)
@@ -109,6 +114,10 @@ function inicializarNavegacao(elements, controllers) {
 
             if (view === "dashboard") {
                 controllers.dashboard.carregarDashboard()
+            }
+
+            if (view === "reports") {
+                controllers.reports.carregarRelatorios()
             }
         })
     })

@@ -40,7 +40,7 @@ export function atualizarContadores(tarefas, titulos) {
 
     atualizarTituloContador(titulos.todo, "A Fazer", totais.todo, "contador")
     atualizarTituloContador(titulos.doing, "Em Andamento", totais.doing, "contador contador-doing")
-    atualizarTituloContador(titulos.done, "Concluido", totais.done, "contador contador-done")
+    atualizarTituloContador(titulos.done, "Concluído", totais.done, "contador contador-done")
 }
 
 export function renderizarBoard(tarefas, elements, handlers, options = {}) {

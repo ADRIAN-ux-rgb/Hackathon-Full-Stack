@@ -1,10 +1,9 @@
 #board {
     width: 100%;
-    margin-top: 2px;
-    padding-bottom: 118px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 18px;
+    margin-top: 0;
+    padding-bottom: 72px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 24px;
 }

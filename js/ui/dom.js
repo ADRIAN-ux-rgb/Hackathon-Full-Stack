@@ -18,8 +18,12 @@ export const elements = {
         btnSalvar: document.getElementById("btn-salvar-edicao")
     },
     corda: document.getElementById("corda"),
+    formularioTarefa: document.getElementById("formulario"),
+    botaoAbrirFormulario: document.getElementById("btn-abrir-formulario"),
+    botaoCancelarTarefa: document.getElementById("btn-cancelar-tarefa"),
     botaoAdicionar: document.getElementById("btn-adicionar"),
     inputTarefa: document.getElementById("input-tarefa"),
+    inputTipo: document.getElementById("input-tipo"),
     inputPrioridade: document.getElementById("input-prioridade"),
     inputDataLimite: document.getElementById("input-data-limite"),
     mensagem: document.getElementById("mensagem"),
@@ -59,8 +63,33 @@ export const elements = {
             doing: document.getElementById("dashboard-legend-doing"),
             done: document.getElementById("dashboard-legend-done")
         },
+        priorityBars: {
+            alta: document.getElementById("dashboard-priority-high"),
+            media: document.getElementById("dashboard-priority-medium"),
+            baixa: document.getElementById("dashboard-priority-low")
+        },
+        priorityValues: {
+            alta: document.getElementById("dashboard-priority-high-value"),
+            media: document.getElementById("dashboard-priority-medium-value"),
+            baixa: document.getElementById("dashboard-priority-low-value")
+        },
+        deadlinesList: document.getElementById("dashboard-deadlines-list"),
+        typesList: document.getElementById("dashboard-types-list"),
         refreshButton: document.getElementById("dashboard-refresh"),
         message: document.getElementById("dashboard-message")
+    },
+    reports: {
+        weekCreated: document.getElementById("reports-week-created"),
+        weekDone: document.getElementById("reports-week-done"),
+        weekOverdue: document.getElementById("reports-week-overdue"),
+        monthCreated: document.getElementById("reports-month-created"),
+        monthDone: document.getElementById("reports-month-done"),
+        monthRate: document.getElementById("reports-month-rate"),
+        typesList: document.getElementById("reports-types-list"),
+        overdueList: document.getElementById("reports-overdue-list"),
+        upcomingList: document.getElementById("reports-upcoming-list"),
+        refreshButton: document.getElementById("reports-refresh"),
+        message: document.getElementById("reports-message")
     },
     auth: {
         views: document.querySelectorAll("[data-auth-view]"),

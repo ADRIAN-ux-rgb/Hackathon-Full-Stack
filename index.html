@@ -17,7 +17,7 @@
         })()
     </script>
 
-    <link rel="stylesheet" href="css/main.css?v=20260524-12" />
+    <link rel="stylesheet" href="css/main.css?v=20260605-13" />
 </head>
 
 <body class="auth-mode">
@@ -34,7 +34,7 @@
     <aside id="sidebar">
 
         <div class="sidebar-logo">
-            <span class="logo-icon">â—</span>
+            <span class="logo-icon" aria-hidden="true">F</span>
             <strong>FlowTask</strong>
         </div>
 
@@ -52,7 +52,7 @@
 
             <button class="menu-item ativo" type="button" data-view="tarefas">
                 <span class="menu-dot"></span>
-                <span class="menu-label">Tarefas</span>
+                <span class="menu-label">Board</span>
             </button>
 
             <button class="menu-item" type="button" data-view="dashboard">
@@ -60,14 +60,9 @@
                 <span class="menu-label">Dashboard</span>
             </button>
 
-            <button class="menu-item" type="button">
+            <button class="menu-item" type="button" data-view="reports">
                 <span class="menu-dot"></span>
-                CalendÃ¡rio
-            </button>
-
-            <button class="menu-item" type="button">
-                <span class="menu-dot"></span>
-                RelatÃ³rios
+                <span class="menu-label">Relatórios</span>
             </button>
 
         </nav>
@@ -109,11 +104,16 @@
 
             <div id="lampada-container">
 
-                <div id="lampada">
+                <div id="lampada" aria-hidden="true">
                     <div id="luz"></div>
                 </div>
 
-                <div id="corda"></div>
+                <button
+                    id="corda"
+                    type="button"
+                    aria-label="Alternar entre tema claro e escuro"
+                    title="Alternar tema"
+                ></button>
 
             </div>
 
@@ -144,7 +144,7 @@
                         </button>
 
                         <button class="task-filter-option" type="button" data-filter-status="done">
-                            ConcluÃ­do
+                            Concluído
                         </button>
                     </div>
 
@@ -168,7 +168,7 @@
                     </div>
 
                     <div id="coluna-done">
-                        <h2>ConcluÃ­do</h2>
+                        <h2>Concluído</h2>
 
                         <ul id="lista-done"></ul>
                     </div>
@@ -179,7 +179,19 @@
 
             </div>
 
-            <div id="formulario" class="task-form">
+            <div class="task-composer">
+            <button
+                id="btn-abrir-formulario"
+                class="task-form-launcher"
+                type="button"
+                aria-controls="formulario"
+                aria-expanded="false"
+            >
+                <span aria-hidden="true">+</span>
+                Nova tarefa
+            </button>
+
+            <div id="formulario" class="task-form" aria-hidden="true">
 
                 <input
                     type="text"
@@ -189,7 +201,19 @@
                 />
 
                 <div class="task-form-actions">
-                    <div class="task-field task-priority-field">
+                    <div class="task-field task-type-field">
+                        <select id="input-tipo" class="task-type-select" aria-label="Tipo da tarefa">
+                            <option value="BUG">BUG</option>
+                            <option value="FEATURE" selected>FEATURE</option>
+                            <option value="REFACTOR">REFACTOR</option>
+                            <option value="TEST">TEST</option>
+                            <option value="DOC">DOC</option>
+                            <option value="DEPLOY">DEPLOY</option>
+                            <option value="HOTFIX">HOTFIX</option>
+                        </select>
+                    </div>
+
+                    <div class="task-field task-priority-field" data-priority="media">
                         <span class="task-field-icon" aria-hidden="true">!</span>
                         <select id="input-prioridade" class="task-priority" aria-label="Prioridade da tarefa">
                             <option value="baixa">Baixa</option>
@@ -198,7 +222,13 @@
                         </select>
                     </div>
 
-                    <div class="task-field task-date-field">
+                    <div
+                        class="task-field task-date-field"
+                        data-date-picker
+                        role="button"
+                        tabindex="0"
+                        aria-label="Abrir calendário para escolher a data limite"
+                    >
                         <span class="task-field-icon" aria-hidden="true">cal</span>
                         <input
                             type="date"
@@ -208,11 +238,17 @@
                         />
                     </div>
 
-                    <button id="btn-adicionar" class="task-submit" type="button">
-                        Adicionar
-                    </button>
+                    <div class="task-form-buttons">
+                        <button id="btn-cancelar-tarefa" class="task-cancel" type="button">
+                            Cancelar
+                        </button>
+                        <button id="btn-adicionar" class="task-submit" type="button">
+                            Adicionar
+                        </button>
+                    </div>
                 </div>
 
+            </div>
             </div>
 
         </section>
@@ -225,7 +261,7 @@
                         <span class="auth-kicker">FlowTask Access</span>
                         <h1 id="login-title">Login</h1>
                         <p>
-                            Entre para continuar organizando tarefas, prioridades e entregas em um unico fluxo.
+                            Entre para continuar organizando tarefas, prioridades e entregas em um único fluxo.
                         </p>
                     </div>
 
@@ -355,7 +391,7 @@
 
                     <div class="auth-switch">
                         <button type="button" data-auth-target="login">
-                            JÃ¡ tenho conta
+                            Já tenho conta
                         </button>
                     </div>
                 </section>
@@ -396,7 +432,7 @@
                 <section class="dashboard-summary" aria-label="Resumo das tarefas">
 
                     <article class="dashboard-card dashboard-card-total">
-                        <span>Total de tarefas</span>
+                        <span>Total</span>
                         <strong id="dashboard-total">0</strong>
                         <small>Itens no quadro</small>
                     </article>
@@ -404,7 +440,7 @@
                     <article class="dashboard-card">
                         <span>A fazer</span>
                         <strong id="dashboard-todo">0</strong>
-                        <small>Demandas aguardando inÃ­cio</small>
+                        <small>Demandas aguardando início</small>
                     </article>
 
                     <article class="dashboard-card">
@@ -414,7 +450,7 @@
                     </article>
 
                     <article class="dashboard-card">
-                        <span>ConcluÃ­das</span>
+                        <span>Concluídas</span>
                         <strong id="dashboard-done">0</strong>
                         <small>Entregas finalizadas</small>
                     </article>
@@ -423,7 +459,7 @@
 
                 <section class="dashboard-chart" aria-labelledby="dashboard-chart-title">
                     <div class="dashboard-chart-copy">
-                        <span>DistribuiÃ§Ã£o</span>
+                        <span>Distribuição</span>
                         <strong id="dashboard-chart-title">Tarefas por status</strong>
                         <small id="dashboard-chart-label">Nenhuma tarefa cadastrada ainda</small>
                     </div>
@@ -435,7 +471,7 @@
                                 class="dashboard-pie"
                                 viewBox="0 0 120 120"
                                 role="img"
-                                aria-label="DistribuiÃ§Ã£o das tarefas por status"
+                                aria-label="Distribuição das tarefas por status"
                             >
                                 <circle class="dashboard-pie-base" cx="60" cy="60" r="44"></circle>
                                 <circle id="dashboard-pie-todo" class="dashboard-pie-segment dashboard-pie-segment-todo" cx="60" cy="60" r="44"></circle>
@@ -449,7 +485,7 @@
                             </div>
                         </div>
 
-                        <ul class="dashboard-chart-legend" aria-label="Legenda do grÃ¡fico">
+                        <ul class="dashboard-chart-legend" aria-label="Legenda do gráfico">
                             <li>
                                 <span class="legend-swatch legend-swatch-todo"></span>
                                 <span>A fazer</span>
@@ -462,29 +498,138 @@
                             </li>
                             <li>
                                 <span class="legend-swatch legend-swatch-done"></span>
-                                <span>ConcluÃ­do</span>
+                                <span>Concluídas</span>
                                 <strong id="dashboard-legend-done">0</strong>
                             </li>
                         </ul>
                     </div>
                 </section>
 
-                <section class="dashboard-progress" aria-label="Porcentagem concluÃ­da">
-                    <div class="dashboard-progress-copy">
-                        <span>ConclusÃ£o</span>
-                        <strong id="dashboard-percent">0%</strong>
-                        <small id="dashboard-progress-label">Nenhuma tarefa concluÃ­da ainda</small>
-                    </div>
+                <div class="dashboard-detail-grid">
+                    <section class="dashboard-priority" aria-labelledby="dashboard-priority-title">
+                        <div class="dashboard-section-heading">
+                            <span>Distribuição</span>
+                            <strong id="dashboard-priority-title">Tarefas por prioridade</strong>
+                        </div>
 
-                    <div class="dashboard-progress-track" aria-hidden="true">
-                        <div id="dashboard-progress-bar"></div>
+                        <div class="dashboard-priority-chart">
+                            <div class="priority-bar-row priority-bar-high">
+                                <div><span>Alta</span><strong id="dashboard-priority-high-value">0</strong></div>
+                                <div class="priority-bar-track"><span id="dashboard-priority-high"></span></div>
+                            </div>
+                            <div class="priority-bar-row priority-bar-medium">
+                                <div><span>Média</span><strong id="dashboard-priority-medium-value">0</strong></div>
+                                <div class="priority-bar-track"><span id="dashboard-priority-medium"></span></div>
+                            </div>
+                            <div class="priority-bar-row priority-bar-low">
+                                <div><span>Baixa</span><strong id="dashboard-priority-low-value">0</strong></div>
+                                <div class="priority-bar-track"><span id="dashboard-priority-low"></span></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="dashboard-progress" aria-label="Taxa de conclusão geral">
+                        <div class="dashboard-progress-copy">
+                            <span>Taxa de conclusão</span>
+                            <strong id="dashboard-percent">0%</strong>
+                            <small id="dashboard-progress-label">Nenhuma tarefa concluída ainda</small>
+                        </div>
+
+                        <div class="dashboard-progress-track" aria-hidden="true">
+                            <div id="dashboard-progress-bar"></div>
+                        </div>
+                    </section>
+                </div>
+
+                <section class="dashboard-deadlines" aria-labelledby="dashboard-deadlines-title">
+                    <div class="dashboard-section-heading">
+                        <span>Agenda</span>
+                        <strong id="dashboard-deadlines-title">Prazos próximos</strong>
+                        <small>Tarefas pendentes com vencimento nos próximos 3 dias</small>
                     </div>
+                    <div id="dashboard-deadlines-list" class="dashboard-deadlines-list"></div>
+                </section>
+
+                <section class="dashboard-types" aria-labelledby="dashboard-types-title">
+                    <div class="dashboard-section-heading">
+                        <span>Classificação</span>
+                        <strong id="dashboard-types-title">Tarefas por tipo</strong>
+                        <small>Distribuição das demandas técnicas do quadro</small>
+                    </div>
+                    <div id="dashboard-types-list" class="dashboard-types-list"></div>
                 </section>
 
             </div>
 
             <p id="dashboard-message"></p>
 
+        </section>
+
+        <section id="reports-view" class="app-view hidden" data-view-panel="reports">
+            <div class="reports-page">
+                <header class="reports-header">
+                    <div>
+                        <span class="reports-kicker">Visão consolidada</span>
+                        <h1>Relatórios</h1>
+                        <p>Indicadores de entrega, qualidade e prazos das demandas técnicas.</p>
+                    </div>
+                    <button id="reports-refresh" type="button">Atualizar</button>
+                </header>
+
+                <div class="reports-period-grid">
+                    <section class="reports-panel" aria-labelledby="reports-week-title">
+                        <div class="reports-panel-heading">
+                            <span>Últimos 7 dias</span>
+                            <h2 id="reports-week-title">Resumo semanal</h2>
+                        </div>
+                        <div class="reports-metrics">
+                            <article><span>Criadas</span><strong id="reports-week-created">0</strong></article>
+                            <article><span>Concluídas</span><strong id="reports-week-done">0</strong></article>
+                            <article><span>Em atraso</span><strong id="reports-week-overdue">0</strong></article>
+                        </div>
+                    </section>
+
+                    <section class="reports-panel" aria-labelledby="reports-month-title">
+                        <div class="reports-panel-heading">
+                            <span>Mês atual</span>
+                            <h2 id="reports-month-title">Resumo mensal</h2>
+                        </div>
+                        <div class="reports-metrics">
+                            <article><span>Criadas</span><strong id="reports-month-created">0</strong></article>
+                            <article><span>Concluídas</span><strong id="reports-month-done">0</strong></article>
+                            <article><span>Conclusão</span><strong id="reports-month-rate">0%</strong></article>
+                        </div>
+                    </section>
+                </div>
+
+                <section class="reports-panel reports-types-panel" aria-labelledby="reports-types-title">
+                    <div class="reports-panel-heading">
+                        <span>Entregas concluídas</span>
+                        <h2 id="reports-types-title">Classificação por tipo</h2>
+                    </div>
+                    <div id="reports-types-list" class="reports-types-list"></div>
+                </section>
+
+                <div class="reports-list-grid">
+                    <section class="reports-panel" aria-labelledby="reports-overdue-title">
+                        <div class="reports-panel-heading">
+                            <span>Atenção necessária</span>
+                            <h2 id="reports-overdue-title">Tarefas em atraso</h2>
+                        </div>
+                        <div id="reports-overdue-list" class="reports-task-list"></div>
+                    </section>
+
+                    <section class="reports-panel" aria-labelledby="reports-upcoming-title">
+                        <div class="reports-panel-heading">
+                            <span>Próximos 7 dias</span>
+                            <h2 id="reports-upcoming-title">Próximos vencimentos</h2>
+                        </div>
+                        <div id="reports-upcoming-list" class="reports-task-list"></div>
+                    </section>
+                </div>
+
+                <p id="reports-message"></p>
+            </div>
         </section>
 
         <section id="profile-view" class="app-view hidden" data-view-panel="profile">
@@ -527,7 +672,7 @@
                     </article>
 
                     <article class="profile-stat-card">
-                        <span>ConcluÃ­das</span>
+                        <span>Concluídas</span>
                         <strong id="profile-done-tasks">0</strong>
                     </article>
                 </section>
@@ -599,7 +744,7 @@
 
     </div>
 
-    <script type="module" src="js/main.js?v=20260524-12"></script>
+    <script type="module" src="js/main.js?v=20260605-11"></script>
 
 </body>
 

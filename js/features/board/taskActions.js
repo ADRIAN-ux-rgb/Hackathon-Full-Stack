@@ -13,7 +13,7 @@ export function criarTaskActions({ getTarefas, setTarefas, getUsuarioAtual, mens
         const usuario = getUsuarioAtual()
 
         if (usuario === null) {
-            mostrarErro(mensagem, "Faca login para adicionar tarefas")
+            mostrarErro(mensagem, "Faça login para adicionar tarefas")
             return false
         }
 
@@ -25,7 +25,7 @@ export function criarTaskActions({ getTarefas, setTarefas, getUsuarioAtual, mens
             toastSuccess("Tarefa criada com sucesso.")
             return true
         } catch {
-            mostrarErro(mensagem, "Nao foi possivel adicionar a tarefa")
+            mostrarErro(mensagem, "Não foi possível adicionar a tarefa")
             toastError("Erro de API ao criar tarefa.")
             return false
         }
@@ -35,8 +35,8 @@ export function criarTaskActions({ getTarefas, setTarefas, getUsuarioAtual, mens
         const usuario = getUsuarioAtual()
 
         if (usuario === null) {
-            mostrarErro(mensagem, "Faca login para atualizar tarefas")
-            toastError("Sessao nao encontrada.")
+            mostrarErro(mensagem, "Faça login para atualizar tarefas")
+            toastError("Sessão não encontrada.")
             return
         }
 
@@ -62,7 +62,7 @@ export function criarTaskActions({ getTarefas, setTarefas, getUsuarioAtual, mens
             mostrarToastAtualizacao(tarefaAnterior, tarefaAtualizada)
         } catch {
             setTarefas(tarefasAtuais)
-            mostrarErro(mensagem, "Nao foi possivel atualizar a tarefa")
+            mostrarErro(mensagem, "Não foi possível atualizar a tarefa")
             toastError("Erro de API ao atualizar tarefa.")
             renderizar()
         }
@@ -72,8 +72,8 @@ export function criarTaskActions({ getTarefas, setTarefas, getUsuarioAtual, mens
         const usuario = getUsuarioAtual()
 
         if (usuario === null) {
-            mostrarErro(mensagem, "Faca login para excluir tarefas")
-            toastError("Sessao nao encontrada.")
+            mostrarErro(mensagem, "Faça login para excluir tarefas")
+            toastError("Sessão não encontrada.")
             return
         }
 
@@ -86,10 +86,10 @@ export function criarTaskActions({ getTarefas, setTarefas, getUsuarioAtual, mens
         try {
             excluirTarefaUsuario(usuario, tarefa.id)
             limparMensagem(mensagem)
-            toastSuccess("Tarefa excluida com sucesso.")
+            toastSuccess("Tarefa excluída com sucesso.")
         } catch {
             setTarefas(tarefasAtuais)
-            mostrarErro(mensagem, "Nao foi possivel excluir a tarefa")
+            mostrarErro(mensagem, "Não foi possível excluir a tarefa")
             toastError("Erro de API ao excluir tarefa.")
             renderizar()
         }

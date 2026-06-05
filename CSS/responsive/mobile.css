@@ -18,9 +18,11 @@
     }
 
     #board {
+        display: flex;
         flex-direction: column;
         align-items: center;
         padding-bottom: 150px;
+        gap: 18px;
     }
 
     #coluna-todo,
@@ -40,9 +42,9 @@
     }
 
     #formulario {
-        width: calc(100% - 32px);
+        width: 100%;
         flex-direction: column;
-        bottom: 18px;
+        bottom: auto;
     }
 
     #input-tarefa,

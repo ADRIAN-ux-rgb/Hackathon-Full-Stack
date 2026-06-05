@@ -1,4 +1,5 @@
 import { STORAGE_KEYS } from "../utils/constants.js"
+import { normalizarTipoTarefa } from "../utils/taskTypes.js"
 
 export function listarTarefasUsuario(usuario) {
     return carregarTarefas(usuario.email)
@@ -80,6 +81,7 @@ function normalizarTarefa(tarefa) {
         nome: tarefa.nome || "",
         status: tarefa.status || "todo",
         prioridade: tarefa.prioridade || "media",
+        tipo: normalizarTipoTarefa(tarefa.tipo),
         dataCriacao: tarefa.dataCriacao || new Date().toISOString(),
         dataLimite: tarefa.dataLimite || null,
         usuarioEmail: tarefa.usuarioEmail || null

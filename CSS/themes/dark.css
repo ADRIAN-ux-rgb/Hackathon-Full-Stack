@@ -1,9 +1,30 @@
 html.dark,
 body.dark {
     background:
-        radial-gradient(circle at top left, rgba(116,145,121,0.10), transparent 32%),
-        linear-gradient(180deg, #1e2421 0%, #111714 100%);
-    color: #f5f1ea;
+        radial-gradient(circle at top left, rgba(112,139,119,0.035), transparent 32%),
+        linear-gradient(180deg, #111a19 0%, #0c1312 100%);
+    color: #edf2ee;
+}
+
+html.dark {
+    --color-bg: #0c1515;
+    --color-bg-soft: #101a19;
+    --color-surface: #15201f;
+    --color-surface-strong: #182423;
+    --color-text: #edf2ee;
+    --color-text-muted: #9aa8a1;
+    --color-primary: #78977f;
+    --color-primary-strong: #91ad97;
+    --color-border: rgba(174,190,181,0.10);
+    --shadow-soft: 0 12px 30px rgba(0,0,0,0.22);
+    --shadow-strong: 0 18px 42px rgba(0,0,0,0.28);
+}
+
+body.dark {
+    background:
+        radial-gradient(circle at 76% 0%, rgba(104,137,145,0.035), transparent 30%),
+        radial-gradient(circle at 12% 0%, rgba(120,151,127,0.03), transparent 26%),
+        #0c1515;
 }
 
 body.dark .subtitle,
@@ -13,8 +34,8 @@ body.dark #page-header p {
 
 body.dark #sidebar,
 body.dark #formulario {
-    background: rgba(20,28,24,0.78);
-    border-color: rgba(255,255,255,0.08);
+    background: rgba(17,27,26,0.97);
+    border-color: rgba(174,190,181,0.09);
 }
 
 body.dark .sidebar-logo,
@@ -52,9 +73,9 @@ body.dark .profile-info small {
 body.dark #coluna-todo,
 body.dark #coluna-doing,
 body.dark #coluna-done {
-    background: linear-gradient(180deg, rgba(38,48,42,0.88), rgba(23,31,27,0.94));
-    border-color: rgba(255,255,255,0.06);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.34);
+    background: #15201f;
+    border-color: rgba(174,190,181,0.08);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.22);
 }
 
 body.dark #coluna-todo h2 {
@@ -70,9 +91,9 @@ body.dark #coluna-done h2 {
 }
 
 body.dark li {
-    background: rgba(255,255,255,0.045);
-    border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 0 5px 16px rgba(0,0,0,0.26);
+    background: #111b1a;
+    border: 1px solid rgba(174,190,181,0.09);
+    box-shadow: 0 5px 16px rgba(0,0,0,0.18);
 }
 
 body.dark li span {
@@ -139,11 +160,97 @@ body.dark #btn-cancelar {
     color: #f5f1ea;
 }
 
-body.dark #lampada {
-    background: linear-gradient(180deg, #3b291a, #24170f);
+body.dark .dashboard-card,
+body.dark .dashboard-chart,
+body.dark .dashboard-progress,
+body.dark .dashboard-priority,
+body.dark .dashboard-deadlines,
+body.dark .dashboard-types {
+    background: #15201f;
+    border-color: rgba(174,190,181,0.08);
+    box-shadow: 0 14px 34px rgba(0,0,0,0.22);
 }
 
-body.dark #luz {
-    opacity: 0;
-    box-shadow: none;
+body.dark .dashboard-chart-legend li,
+body.dark .dashboard-deadline-item,
+body.dark .dashboard-type-item {
+    background: rgba(9,17,16,0.46);
+    border-color: rgba(174,190,181,0.08);
+}
+
+body.dark #input-tarefa,
+body.dark #input-prioridade,
+body.dark #input-tipo,
+body.dark #input-data-limite {
+    background-color: #101918;
+    border-color: rgba(174,190,181,0.13);
+    color: #edf2ee;
+}
+
+body.dark .menu-item:hover,
+body.dark .menu-item.ativo {
+    background: rgba(120,151,127,0.10);
+    color: #a9c0ae;
+}
+
+body.dark .menu-item.ativo .menu-dot {
+    background: #8da994;
+    box-shadow: 0 0 0 4px rgba(120,151,127,0.07);
+}
+
+body.dark .subtitle,
+body.dark #page-header p,
+body.dark .task-info,
+body.dark .empty-state {
+    color: #94a3b8;
+}
+
+body.dark #btn-adicionar,
+body.dark #dashboard-refresh {
+    background: linear-gradient(135deg, #78977f, #607a67);
+    color: #f4f7f4;
+    box-shadow: 0 10px 22px rgba(45,69,53,0.14);
+}
+
+body.dark #btn-adicionar:hover,
+body.dark #dashboard-refresh:hover {
+    background: linear-gradient(135deg, #88a48e, #6d8873);
+}
+
+body.dark .modal-box,
+body.dark .profile-card,
+body.dark .profile-stat-card {
+    background: #15201f;
+    border-color: rgba(174,190,181,0.09);
+}
+
+body.auth-mode {
+    background:
+        radial-gradient(circle at 18% 18%, rgba(120,151,127,0.05), transparent 30%),
+        radial-gradient(circle at 82% 76%, rgba(104,137,145,0.045), transparent 28%),
+        #0c1515;
+}
+
+.auth-panel {
+    background: #15201f;
+    border-color: rgba(174,190,181,0.09);
+}
+
+.auth-visual,
+.auth-visual-register {
+    background:
+        radial-gradient(circle at 32% 24%, rgba(120,151,127,0.08), transparent 24%),
+        radial-gradient(circle at 78% 74%, rgba(104,137,145,0.07), transparent 28%),
+        #111b1a;
+    border-color: rgba(174,190,181,0.09);
+}
+
+.auth-submit {
+    background: linear-gradient(135deg, #78977f, #607a67);
+    color: #f4f7f4;
+    box-shadow: 0 14px 28px rgba(45,69,53,0.14);
+}
+
+.auth-submit:hover {
+    background: linear-gradient(135deg, #88a48e, #6d8873);
 }

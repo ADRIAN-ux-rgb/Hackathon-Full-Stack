@@ -71,7 +71,7 @@ export function criarBoardController(elements, modals) {
             limparMensagem(elements.mensagem)
             renderizar()
         } catch {
-            mostrarErro(elements.mensagem, "Nao foi possivel carregar as tarefas")
+            mostrarErro(elements.mensagem, "Não foi possível carregar as tarefas")
             toastError("Erro ao carregar tarefas.")
             renderizar()
         }
